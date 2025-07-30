@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Customer Recommendation System</h1>
+            <p>Get personalized product recommendations based on customer order history</p>
+        </header>
+
+        <div class="search-section">
+            <div class="search-box">
+                <label for="customerId">Customer ID (CardCode):</label>
+                <input type="text" id="customerId" placeholder="Enter Customer ID (e.g., C2357)" />
+                <button id="searchBtn" onclick="getRecommendations()">Get Recommendations</button>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Analyzing customer data...</p>
+        </div>
+
+        <div id="customerInfo" class="customer-info hidden">
+            <h2>Customer Information</h2>
+            <div class="customer-details">
+                <div class="detail-item">
+                    <span class="label">Name:</span>
+                    <span id="customerName">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Customer ID:</span>
+                    <span id="customerCode">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Location:</span>
+                    <span id="customerLocation">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Phone:</span>
+                    <span id="customerPhone">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Type:</span>
+                    <span id="customerType">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="recommendations" class="recommendations hidden">
+            <h2>Personalized Recommendations</h2>
+            <div id="recommendationsList"></div>
+            <div class="legend">
+                <h4>Legend:</h4>
+                <ul>
+                    <li><span class="recommendation-tag">Based on purchase history</span> - You have ordered this item before</li>
+                    <li><span class="similar-item-tag">Name similarity</span> - Item name is similar</li>
+                    <li><span class="similar-item-tag code">Code similarity</span> - Item code is similar</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="error" class="error hidden">
+            <h3>Error</h3>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html> 
