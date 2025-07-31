@@ -1,5 +1,6 @@
 // Global variables
 let currentCustomerId = '';
+let currentRecommendations = [];
 
 // Main function to get recommendations
 async function getRecommendations() {
@@ -51,10 +52,12 @@ function hideCustomerInfo() {
 
 function hideRecommendations() {
     document.getElementById('recommendations').classList.add('hidden');
+    document.getElementById('filterSection').classList.add('hidden');
 }
 
 // Display recommendations
 function displayRecommendations(recommendations) {
+    currentRecommendations = recommendations;
     const container = document.getElementById('recommendationsList');
     container.innerHTML = '';
     
@@ -64,6 +67,7 @@ function displayRecommendations(recommendations) {
     });
     
     document.getElementById('recommendations').classList.remove('hidden');
+    document.getElementById('filterSection').classList.remove('hidden');
 }
 
 // Create recommendation element
@@ -104,32 +108,35 @@ function createRecommendationElement(rec, index) {
         
         <div class="similar-items">
             <h4>Similar Items By Name</h4>
-            ${rec.similarItemsByName && rec.similarItemsByName.length > 0 ? rec.similarItemsByName.map(item => `
-                <div class="similar-item">
-                    <div>
-                        <div class="similar-item-name">${item.itemName}</div>
-                        <div class="similar-item-code">${item.itemCode}</div>
-                        <div class="similar-item-tag">${item.tag || ''}</div>
+            <div class="similar-items-name" data-filter="name">
+                ${rec.similarItemsByName && rec.similarItemsByName.length > 0 ? rec.similarItemsByName.map(item => `
+                    <div class="similar-item">
+                        <div>
+                            <div class="similar-item-name">${item.itemName}</div>
+                            <div class="similar-item-code">${item.itemCode}</div>
+                            <div class="similar-item-tag">${item.tag || ''}</div>
+                        </div>
+                        <span class="stock-status ${item.inStock > 0 ? 'in-stock' : 'out-of-stock'}">
+                            ${item.inStock > 0 ? 'In Stock' : 'Out of Stock'}
+                        </span>
                     </div>
-                    <span class="stock-status ${item.inStock > 0 ? 'in-stock' : 'out-of-stock'}">
-                        ${item.inStock > 0 ? 'In Stock' : 'Out of Stock'}
-                    </span>
-                </div>
-            `).join('') : '<div class="no-similar">No similar items found by name.</div>'}
-            <h4>Similar Items By Code</h4>
-            ${rec.similarItemsByCode && rec.similarItemsByCode.length > 0 ? rec.similarItemsByCode.map(item => `
-                <div class="similar-item">
-                    <div>
-                        <div class="similar-item-name">${item.itemName}</div>
-                        <div class="similar-item-code">${item.itemCode}</div>
-                        <div class="similar-item-tag">${item.tag || ''}</div>
+                `).join('') : '<div class="no-similar">No similar items found by name.</div>'}
+            </div>
+            <h4>Similar Items By Category</h4>
+            <div class="similar-items-code" data-filter="category">
+                ${rec.similarItemsByCode && rec.similarItemsByCode.length > 0 ? rec.similarItemsByCode.map(item => `
+                    <div class="similar-item">
+                        <div>
+                            <div class="similar-item-name">${item.itemName}</div>
+                            <div class="similar-item-code">${item.itemCode}</div>
+                            <div class="similar-item-tag">${item.tag || ''}</div>
+                        </div>
+                        <span class="stock-status ${item.inStock > 0 ? 'in-stock' : 'out-of-stock'}">
+                            ${item.inStock > 0 ? 'In Stock' : 'Out of Stock'}
+                        </span>
                     </div>
-                    <span class="stock-status ${item.inStock > 0 ? 'in-stock' : 'out-of-stock'}">
-                        ${item.inStock > 0 ? 'In Stock' : 'Out of Stock'}
-                    </span>
-                </div>
-            `).join('') : '<div class="no-similar">No similar items found by code.</div>'}
-
+                `).join('') : '<div class="no-similar">No similar items found by code.</div>'}
+            </div>
         </div>
         
         <div class="reason">
@@ -138,6 +145,49 @@ function createRecommendationElement(rec, index) {
     `;
     
     return div;
+}
+
+// Filter recommendations based on selected filter type
+function filterRecommendations() {
+    const filterType = document.getElementById('filterType').value;
+    const similarItemsName = document.querySelectorAll('.similar-items-name');
+    const similarItemsCode = document.querySelectorAll('.similar-items-code');
+    
+    similarItemsName.forEach(container => {
+        if (filterType === 'all' || filterType === 'name') {
+            container.style.display = 'block';
+        } else {
+            container.style.display = 'none';
+        }
+    });
+    
+    similarItemsCode.forEach(container => {
+        if (filterType === 'all' || filterType === 'category') {
+            container.style.display = 'block';
+        } else {
+            container.style.display = 'none';
+        }
+    });
+    
+    // Update section headers visibility
+    const nameHeaders = document.querySelectorAll('.similar-items h4:first-of-type');
+    const codeHeaders = document.querySelectorAll('.similar-items h4:last-of-type');
+    
+    nameHeaders.forEach(header => {
+        if (filterType === 'all' || filterType === 'name') {
+            header.style.display = 'block';
+        } else {
+            header.style.display = 'none';
+        }
+    });
+    
+    codeHeaders.forEach(header => {
+        if (filterType === 'all' || filterType === 'category') {
+            header.style.display = 'block';
+        } else {
+            header.style.display = 'none';
+        }
+    });
 }
 
 // UI Helper functions

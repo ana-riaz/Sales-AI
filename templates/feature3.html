@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Ordering System - Halal Food Deliveries</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .nav-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .nav-title {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        .content {
+            padding: 30px;
+        }
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .results {
+            margin-top: 30px;
+        }
+        .customer-info {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+        .suggestions {
+            display: grid;
+            gap: 20px;
+        }
+        .suggestion-category {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        .suggestion-category h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+        .suggestions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .suggestions-grid .suggestion-card:nth-child(4) {
+            grid-column: 1;
+        }
+        .suggestions-grid .suggestion-card:nth-child(5) {
+            grid-column: 2 / -1;
+        }
+        .suggestion-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        .suggestion-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+        .suggestion-card.high {
+            border-left: 5px solid #e74c3c;
+        }
+        .suggestion-card.medium {
+            border-left: 5px solid #f39c12;
+        }
+        .suggestion-card.low {
+            border-left: 5px solid #27ae60;
+        }
+        .suggestion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .suggestion-message {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .suggestion-type {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .suggestion-reason {
+            color: #6c757d;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .patterns-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .pattern-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .patterns-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .patterns-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .patterns-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 14px;
+        }
+        .patterns-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        .patterns-table tr:last-child td {
+            border-bottom: none;
+        }
+        .item-code {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .interval-data {
+            text-align: center;
+        }
+        .quantity-data {
+            text-align: center;
+        }
+        .date-data {
+            text-align: center;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+        .stock-data {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .stock-negative {
+            color: #721c24;
+        }
+        .stock-low {
+            color: #c0392b;
+        }
+        .stock-medium {
+            color: #f39c12;
+        }
+        .stock-good {
+            color: #27ae60;
+        }
+        .item-name {
+            font-style: italic;
+            color: #555;
+        }
+        .price-data {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-header">
+        <div class="nav-container">
+            <div class="nav-title">🤖 AI Sales Module</div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">📊 Product Recommendations</a>
+                <a href="/predictive" class="nav-link active">🔮 Predictive Ordering</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Predictive Ordering System</h1>
+            <p>AI-powered smart cart suggestions for Halal Food Deliveries</p>
+        </div>
+        
+        <div class="content">
+            <div class="input-section">
+                <h2>Get Predictive Recommendations</h2>
+                <div class="input-group">
+                    <input type="text" id="customerId" placeholder="Enter SAP Customer ID (e.g., C12345)" />
+                    <button onclick="getPredictions()">Get Predictions</button>
+                    <button onclick="getAllSAPPredictions()">Get All SAP Predictions</button>
+                </div>
+            </div>
+            
+                         <div id="results" class="results" style="display: none;">
+                 <div id="stats" class="stats"></div>
+                 <div id="customerInfo" class="customer-info"></div>
+                 <div id="suggestions" class="suggestions"></div>
+                 <div id="patterns" class="patterns-section">
+                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                         <h3>📊 Order Patterns Analysis</h3>
+                         <button onclick="exportPatternsToCSV()" style="background: #28a745; font-size: 14px; padding: 8px 15px;">
+                             📥 Export to CSV
+                         </button>
+                     </div>
+                     <div id="patternsContent"></div>
+                 </div>
+             </div>
+            
+            <div id="loading" class="loading" style="display: none;">
+                <h3>🔄 Analyzing customer patterns...</h3>
+                <p>This may take a few moments as we analyze historical data and inventory levels.</p>
+            </div>
+            
+            <div id="error" class="error" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        async function getPredictions() {
+            const customerId = document.getElementById('customerId').value.trim();
+            if (!customerId) {
+                alert('Please enter a customer ID');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                const response = await fetch(`/api/predictive/${customerId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayResults(data.predictions);
+                } else {
+                    showError(data.message);
+                }
+            } catch (error) {
+                showError('Failed to fetch predictions: ' + error.message);
+            }
+        }
+        
+        async function getAllSAPPredictions() {
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/predictive/all-sap');
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayAllSAPResults(data);
+                } else {
+                    showError(data.message);
+                }
+            } catch (error) {
+                showError('Failed to fetch all SAP predictions: ' + error.message);
+            }
+        }
+        
+        function displayResults(predictions) {
+            hideLoading();
+            
+            const resultsDiv = document.getElementById('results');
+            const statsDiv = document.getElementById('stats');
+            const customerInfoDiv = document.getElementById('customerInfo');
+            const suggestionsDiv = document.getElementById('suggestions');
+            const patternsDiv = document.getElementById('patterns');
+            
+            // Display stats
+            statsDiv.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${predictions.total_items_analyzed}</div>
+                    <div class="stat-label">Items Analyzed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${predictions.total_suggestions}</div>
+                    <div class="stat-label">Smart Suggestions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${predictions.suggestions.filter(s => s.priority === 'high').length}</div>
+                    <div class="stat-label">High Priority</div>
+                </div>
+            `;
+            
+            // Display customer info
+            const customer = predictions.customer_info;
+            customerInfoDiv.innerHTML = `
+                <h3>👤 Customer Information</h3>
+                <p><strong>Name:</strong> ${customer.card_name || 'N/A'}</p>
+                <p><strong>ID:</strong> ${customer.card_code || 'N/A'}</p>
+                <p><strong>Type:</strong> ${customer.customer_type || 'N/A'}</p>
+                <p><strong>Country:</strong> ${customer.country || 'N/A'}</p>
+            `;
+            
+            // Display suggestions by category
+            if (predictions.suggestions && predictions.suggestions.length > 0) {
+                suggestionsDiv.innerHTML = '<h3>💡 Smart Cart Suggestions</h3>';
+                
+                // Group suggestions by type (backend already provides top 5 per category)
+                const groupedSuggestions = {};
+                predictions.suggestions.forEach(suggestion => {
+                    if (!groupedSuggestions[suggestion.type]) {
+                        groupedSuggestions[suggestion.type] = [];
+                    }
+                    groupedSuggestions[suggestion.type].push(suggestion);
+                });
+                
+                // Display each category
+                const categoryNames = {
+                    'usual_reorder': '🔄 Usual Reorder Suggestions',
+                    'low_stock': '⚠️ Low Stock Alerts'
+                };
+                
+                Object.keys(groupedSuggestions).forEach(type => {
+                    const suggestions = groupedSuggestions[type];
+                    console.log(`Category ${type}: ${suggestions.length} suggestions`);
+                    if (suggestions.length > 0) {
+                        const categoryName = categoryNames[type] || type.replace('_', ' ').toUpperCase();
+                        
+                        suggestionsDiv.innerHTML += `
+                            <div class="suggestion-category">
+                                <h4>${categoryName} (${suggestions.length} suggestions)</h4>
+                                <div class="suggestions-grid">
+                        `;
+                        
+                        suggestions.forEach((suggestion, index) => {
+                            suggestionsDiv.innerHTML += `
+                                <div class="suggestion-card ${suggestion.priority}" data-index="${index}">
+                                    <div class="suggestion-header">
+                                        <div class="suggestion-message">${suggestion.message}</div>
+                                        <div class="suggestion-type">${suggestion.type.replace('_', ' ').toUpperCase()}</div>
+                                    </div>
+                                    <div class="suggestion-reason">${suggestion.reason}</div>
+                                </div>
+                            `;
+                        });
+                        
+                        suggestionsDiv.innerHTML += `
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            } else {
+                suggestionsDiv.innerHTML = `
+                    <h3>💡 Smart Cart Suggestions</h3>
+                    <div class="suggestion-card">
+                        <div class="suggestion-header">
+                            <div class="suggestion-message">No Recent Patterns Found</div>
+                            <div class="suggestion-type">INFO</div>
+                        </div>
+                        <div class="suggestion-reason">
+                            No suggestions available because:<br>
+                            • No orders in the last 6 months, OR<br>
+                            • Order patterns are outside weekly/monthly range (7-90 days), OR<br>
+                            • Customer doesn't have consistent ordering patterns
+                        </div>
+                    </div>
+                `;
+            }
+            
+                         // Display patterns in table format
+             const patternsContentDiv = document.getElementById('patternsContent');
+             if (predictions.patterns && Object.keys(predictions.patterns).length > 0) {
+                 // Sort patterns by last order date (most recent first)
+                 const sortedPatterns = Object.entries(predictions.patterns).sort((a, b) => 
+                     new Date(b[1].last_order_date) - new Date(a[1].last_order_date)
+                 );
+                 
+                 let tableHTML = `
+                     <table class="patterns-table">
+                         <thead>
+                             <tr>
+                                 <th>Item Code</th>
+                                 <th>Item Name</th>
+                                 <th>Average Interval (days)</th>
+                                 <th>Average Quantity (units)</th>
+                                 <th>Average Price</th>
+                                 <th>Current Stock</th>
+                                 <th>Total Orders</th>
+                                 <th>Last Order Date</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                 `;
+                 
+                 sortedPatterns.forEach(([itemCode, pattern]) => {
+                     // Determine stock status for visual indication
+                     let stockClass = '';
+                     let stockText = pattern.current_stock;
+                     
+                     if (pattern.current_stock < 0) {
+                         stockClass = 'stock-negative';
+                         stockText = `⚠️ ${pattern.current_stock}`;
+                     } else if (pattern.current_stock < pattern.avg_quantity) {
+                         stockClass = 'stock-low';
+                         stockText = `🔴 ${pattern.current_stock}`;
+                     } else if (pattern.current_stock < pattern.avg_quantity * 2) {
+                         stockClass = 'stock-medium';
+                         stockText = `🟡 ${pattern.current_stock}`;
+                     } else {
+                         stockClass = 'stock-good';
+                         stockText = `🟢 ${pattern.current_stock}`;
+                     }
+                     
+                     tableHTML += `
+                         <tr>
+                             <td class="item-code">${itemCode}</td>
+                             <td class="item-name">${pattern.item_name || 'Unknown'}</td>
+                             <td class="interval-data">${pattern.avg_interval}</td>
+                             <td class="quantity-data">${pattern.avg_quantity.toFixed(1)}</td>
+                             <td class="price-data">$${pattern.avg_price ? pattern.avg_price.toFixed(2) : '0.00'}</td>
+                             <td class="stock-data ${stockClass}">${stockText}</td>
+                             <td class="quantity-data">${pattern.total_orders}</td>
+                             <td class="date-data">${new Date(pattern.last_order_date).toLocaleDateString()}</td>
+                         </tr>
+                     `;
+                 });
+                 
+                 tableHTML += `
+                         </tbody>
+                     </table>
+                 `;
+                 
+                 patternsContentDiv.innerHTML = tableHTML;
+                 
+                 // Store patterns data for CSV export
+                 window.currentPatternsData = predictions.patterns;
+                 window.currentCustomerInfo = predictions.customer_info;
+             } else {
+                 patternsContentDiv.innerHTML = '<p>No patterns found for this customer.</p>';
+                 window.currentPatternsData = null;
+             }
+            
+            resultsDiv.style.display = 'block';
+        }
+        
+        function displayAllSAPResults(data) {
+            hideLoading();
+            
+            const resultsDiv = document.getElementById('results');
+            const statsDiv = document.getElementById('stats');
+            const customerInfoDiv = document.getElementById('customerInfo');
+            const suggestionsDiv = document.getElementById('suggestions');
+            const patternsDiv = document.getElementById('patterns');
+            
+            // Display overall stats
+            statsDiv.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${data.total_customers}</div>
+                    <div class="stat-label">SAP Customers Analyzed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${Object.values(data.predictions).reduce((sum, p) => sum + p.total_suggestions, 0)}</div>
+                    <div class="stat-label">Total Suggestions Generated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${Object.values(data.predictions).reduce((sum, p) => sum + p.total_items_analyzed, 0)}</div>
+                    <div class="stat-label">Total Items Analyzed</div>
+                </div>
+            `;
+            
+            customerInfoDiv.innerHTML = '<h3>👥 All SAP Customers Analysis</h3>';
+            
+            // Display suggestions summary
+            let totalSuggestions = 0;
+            let highPrioritySuggestions = 0;
+            
+            Object.values(data.predictions).forEach(prediction => {
+                totalSuggestions += prediction.total_suggestions;
+                highPrioritySuggestions += prediction.suggestions.filter(s => s.priority === 'high').length;
+            });
+            
+            suggestionsDiv.innerHTML = `
+                <h3>💡 Smart Cart Suggestions Summary</h3>
+                <div class="suggestion-card">
+                    <div class="suggestion-header">
+                        <div class="suggestion-message">Total Suggestions Generated</div>
+                        <div class="suggestion-type">SUMMARY</div>
+                    </div>
+                    <div class="suggestion-reason">
+                        <strong>${totalSuggestions}</strong> total suggestions across all SAP customers<br>
+                        <strong>${highPrioritySuggestions}</strong> high priority suggestions<br>
+                        <strong>${data.total_customers}</strong> customers with suggestions
+                    </div>
+                </div>
+            `;
+            
+            patternsDiv.innerHTML = '<h3>📊 Patterns Analysis Summary</h3><p>Pattern analysis completed for all SAP customers.</p>';
+            
+            resultsDiv.style.display = 'block';
+        }
+        
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        function showError(message) {
+            hideLoading();
+            document.getElementById('error').innerHTML = `<strong>Error:</strong> ${message}`;
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+        
+                 // Allow Enter key to submit
+         document.getElementById('customerId').addEventListener('keypress', function(e) {
+             if (e.key === 'Enter') {
+                 getPredictions();
+             }
+         });
+         
+         // CSV Export function
+         function exportPatternsToCSV() {
+             if (!window.currentPatternsData) {
+                 alert('No patterns data available to export');
+                 return;
+             }
+             
+             const customerInfo = window.currentCustomerInfo;
+             const patterns = window.currentPatternsData;
+             
+             // Sort patterns by last order date (most recent first)
+             const sortedPatterns = Object.entries(patterns).sort((a, b) => 
+                 new Date(b[1].last_order_date) - new Date(a[1].last_order_date)
+             );
+             
+             // Create CSV header
+             let csvContent = 'data:text/csv;charset=utf-8,';
+             csvContent += 'Customer ID,Customer Name,Customer Type,Country,Item Code,Item Name,Average Interval (days),Average Quantity (units),Average Price,Current Stock,Total Orders,Last Order Date\n';
+             
+             // Add data rows
+             sortedPatterns.forEach(([itemCode, pattern]) => {
+                 const row = [
+                     customerInfo.card_code || 'N/A',
+                     customerInfo.card_name || 'N/A',
+                     customerInfo.customer_type || 'N/A',
+                     customerInfo.country || 'N/A',
+                     itemCode,
+                     pattern.item_name || 'Unknown',
+                     pattern.avg_interval,
+                     pattern.avg_quantity.toFixed(1),
+                     pattern.avg_price ? pattern.avg_price.toFixed(2) : '0.00',
+                     pattern.current_stock,
+                     pattern.total_orders,
+                     new Date(pattern.last_order_date).toLocaleDateString()
+                 ];
+                 csvContent += row.map(field => `"${field}"`).join(',') + '\n';
+             });
+             
+             // Create download link
+             const encodedUri = encodeURI(csvContent);
+             const link = document.createElement('a');
+             link.setAttribute('href', encodedUri);
+             link.setAttribute('download', `order_patterns_${customerInfo.card_code || 'customer'}_${new Date().toISOString().split('T')[0]}.csv`);
+             document.body.appendChild(link);
+             link.click();
+             document.body.removeChild(link);
+         }
+    </script>
+</body>
+</html> 

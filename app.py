@@ -3,7 +3,8 @@ from flask_cors import CORS
 import json
 from datetime import datetime
 import os
-from Recommend_items import get_personalized_recommendations, customers_col, invoices_col, items_col
+from Feature2.Recommend_items import get_personalized_recommendations, customers_col, invoices_col, items_col
+from Feature3.predictive_ordering import get_predictive_recommendations, get_all_sap_predictions
 
 app = Flask(__name__)
 CORS(app)
@@ -11,7 +12,7 @@ CORS(app)
 def save_analysis_to_json(analysis_result, customer_id):
     """Save analysis results to a JSON file."""
     # Create results directory if it doesn't exist
-    results_dir = "analysis_results"
+    results_dir = "Feature2/analysis_results"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
     
@@ -28,7 +29,15 @@ def save_analysis_to_json(analysis_result, customer_id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('feature2.html')
+
+@app.route('/recommendations')
+def recommendations_index():
+    return render_template('feature2.html')
+
+@app.route('/predictive')
+def predictive_index():
+    return render_template('feature3.html')
 
 @app.route('/api/recommendations/<customer_id>')
 def get_recommendations_api(customer_id):
@@ -138,6 +147,48 @@ def get_recommendations_api(customer_id):
         }
         save_analysis_to_json(error_result, customer_id)
         
+        return jsonify({
+            "success": False,
+            "message": f"An error occurred: {str(e)}"
+        }), 500
+
+# Predictive Ordering System Endpoints
+@app.route('/api/predictive/<customer_id>')
+def get_predictive_api(customer_id):
+    """Get predictive ordering suggestions for a specific customer"""
+    try:
+        predictions = get_predictive_recommendations(customer_id)
+        
+        if not predictions:
+            return jsonify({
+                "success": False,
+                "message": f"No predictions available for customer {customer_id}"
+            }), 404
+        
+        return jsonify({
+            "success": True,
+            "predictions": predictions
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"An error occurred: {str(e)}"
+        }), 500
+
+@app.route('/api/predictive/all-sap')
+def get_all_sap_predictive_api():
+    """Get predictive ordering suggestions for all SAP customers"""
+    try:
+        all_predictions = get_all_sap_predictions()
+        
+        return jsonify({
+            "success": True,
+            "total_customers": len(all_predictions),
+            "predictions": all_predictions
+        })
+        
+    except Exception as e:
         return jsonify({
             "success": False,
             "message": f"An error occurred: {str(e)}"

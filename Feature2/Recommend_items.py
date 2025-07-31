@@ -144,17 +144,22 @@ def find_similar_items_by_name(item_code, items_col, item_name, purchased_codes=
     return results[:limit]
 
 def find_similar_items_by_code(item_code, items_col, purchased_codes=None, limit=5):
-    """Find items with similar codes using database queries."""
+    """Find items with similar category (ItemsGroupCode) using database queries."""
     if not item_code:
         return []
     
-    # Extract prefix and pattern from item code (use first 4 characters for better matching)
-    code_prefix = item_code[:4] if len(item_code) >= 4 else item_code
-    code_pattern = f"^{code_prefix}"
+    # First, get the current item's category (ItemsGroupCode)
+    current_item = items_col.find_one({"ItemCode": item_code})
+    if not current_item:
+        return []
     
-    # Build query
+    current_category = current_item.get("ItemsGroupCode")
+    if not current_category:
+        return []
+    
+    # Build query to find items in the same category
     query = {
-        "ItemCode": {"$regex": code_pattern, "$options": "i"},
+        "ItemsGroupCode": current_category,
         "ItemCode": {"$ne": item_code},
         "QuantityOnStock": {"$gt": 0}
     }
@@ -170,7 +175,7 @@ def find_similar_items_by_code(item_code, items_col, purchased_codes=None, limit
             "ItemCode": item["ItemCode"],
             "ItemName": item.get("ItemName", ""),
             "QuantityOnStock": item.get("QuantityOnStock", 0),
-            "Tag": "Code similarity"
+            "Tag": "Category similarity"
         })
     
     return results
@@ -221,7 +226,7 @@ def analyze_order_frequency(order_history):
     ]
 
 def get_personalized_recommendations(card_code, invoices_col, items_col):
-    """Get personalized recommendations based on order history with three similarity filters."""
+    """Get personalized recommendations based on order history with two similarity filters."""
     # Get customer's order history
     order_history = get_customer_order_history(card_code, invoices_col)
     
@@ -349,14 +354,8 @@ if __name__ == "__main__":
                     print(f"      {j}. {similar['ItemName']} ({similar['ItemCode']}) {similar_status}")
             
             if rec['SimilarItemsByCode']:
-                print(f"   🔍 Similar Items You Might Like (Code):")
+                print(f"   🔍 Similar Items You Might Like (Category):")
                 for j, similar in enumerate(rec['SimilarItemsByCode'], 1):
-                    similar_status = "✅" if similar['QuantityOnStock'] > 0 else "❌"
-                    print(f"      {j}. {similar['ItemName']} ({similar['ItemCode']}) {similar_status}")
-
-            if rec['SimilarItemsBySubcategory']:
-                print(f"   🔍 Similar Items You Might Like (Subcategory):")
-                for j, similar in enumerate(rec['SimilarItemsBySubcategory'], 1):
                     similar_status = "✅" if similar['QuantityOnStock'] > 0 else "❌"
                     print(f"      {j}. {similar['ItemName']} ({similar['ItemCode']}) {similar_status}")
             

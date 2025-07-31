@@ -1,27 +1,19 @@
-# PQF - Product Recommendation System
+# AI Sales Module - Halal Food Deliveries
 
-A sophisticated web-based product recommendation system built with Python Flask, MongoDB, and JavaScript. The system analyzes customer purchase history and provides personalized product recommendations using multiple similarity algorithms.
+A comprehensive AI-powered sales module built with Python Flask, MongoDB, and JavaScript. The system provides both personalized product recommendations (Feature2) and predictive ordering suggestions (Feature3) for SAP customers in the halal food delivery industry.
 
-## 🎯 How the Recommendation System Works
+## System Overview
 
-### Core Algorithm Overview
+Main AI features designed to enhance customer experience and drive sales:
 
-The recommendation system uses a **hybrid approach** combining:
+### **Feature: Personalized Product Recommendation System**
 
 1. **Purchase History Analysis** - Analyzes customer's past orders
 2. **Similarity Matching** - Finds similar products using multiple criteria
 3. **Inventory Integration** - Checks real-time stock availability
 4. **Frequency Analysis** - Prioritizes frequently ordered items
 
-### Data Flow Architecture
-
-```
-Customer Request → Flask API → MongoDB Query → Recommendation Engine → Response
-     ↓                    ↓              ↓              ↓              ↓
-  Customer ID    →   Order History  →  Item Details →  Similar Items →  JSON Response
-```
-
-### Step-by-Step Recommendation Process
+### **Step-by-Step Recommendation Process**
 
 #### 1. **Customer Order History Retrieval**
 - Queries MongoDB for all invoices belonging to the customer
@@ -29,241 +21,190 @@ Customer Request → Flask API → MongoDB Query → Recommendation Engine → R
 - Filters out items with zero quantities (returns/exchanges)
 - Builds a comprehensive purchase profile
 
-#### 2. **Frequency Analysis**
-```python
-def analyze_order_frequency(order_history):
-    # Count total quantities per item
-    # Sort by frequency and total quantity
-    # Return top items for recommendation
-```
-
-#### 3. **Similarity Matching (Three Filters)**
+#### 2. **Similarity Matching (Two Filters)**
 
 **A. Name-Based Similarity**
 - Uses regex pattern matching on item names
 - Extracts key words and finds items with similar naming patterns
-- Example: "Steel Pipe 2in" matches "Steel Pipe 3in"
 
-**B. Code-Based Similarity**
-- Analyzes item codes for structural patterns
-- Groups items with similar code prefixes/suffixes
-- Example: "PIPE-001" matches "PIPE-002"
+**B. Category-Based Similarity**
+- Uses ItemsGroupCode from the database
+- Groups items in the same product category
 
-**C. Subcategory Matching**
-- Groups items by their subcategory classification
-- Finds items in the same product category
-- Provides broader category-based recommendations
+### **API Endpoints**
 
-#### 4. **Inventory Integration**
-- Checks real-time stock levels for recommended items
-- Marks items as "Available" or "Out of Stock"
-- Includes stock quantities in recommendations
-
-#### 5. **Recommendation Formatting**
-- Combines purchase history with similar items
-- Includes recent invoice details (last 3 purchases)
-- Provides reasoning for each recommendation
-
-### Technical Architecture
-
-#### Backend Components
-
-**`app.py`** - Flask Web Server
-- RESTful API endpoints
-- Customer data retrieval
-- Response formatting and JSON export
-- Error handling and logging
-
-**`Recommend_items.py`** - Core Recommendation Engine
-- `get_personalized_recommendations()` - Main recommendation function
-- `get_customer_order_history()` - Purchase history analysis
-- `find_similar_items_by_name()` - Name-based similarity
-- `find_similar_items_by_code()` - Code-based similarity
-- `analyze_order_frequency()` - Frequency analysis
-
-**`setup_indexes.py`** - Database Optimization
-- Creates MongoDB indexes for performance
-- Optimizes queries for large datasets
-- Ensures fast response times
-
-#### Database Schema
-
-**Customers Collection**
-```json
-{
-  "CardCode": "C12345",
-  "CardName": "Customer Name",
-  "customerType": "sap",
-  "address": {
-    "city": "City",
-    "country": "Country"
-  },
-  "phoneNumber": "123-456-7890"
-}
-```
-
-**Invoices Collection**
-```json
-{
-  "CardCode": "C12345",
-  "DocNum": "INV001",
-  "DocDate": "2024-01-15",
-  "DocTotal": 1500.00,
-  "DocumentLines": [
-    {
-      "ItemCode": "ITEM001",
-      "ItemDescription": "Product Description",
-      "Quantity": 10,
-      "Price": 150.00,
-      "LineTotal": 1500.00
-    }
-  ]
-}
-```
-
-**Items Collection**
-```json
-{
-  "ItemCode": "ITEM001",
-  "ItemName": "Product Name",
-  "ItemsGroupCode": 100,
-  "U_SubCategory": "Pipes",
-  "U_cat_lev_2": "Plumbing",
-  "QuantityOnStock": 50,
-  "ItemPrices": [...]
-}
-```
-
-### API Endpoints
-
-#### GET `/api/recommendations/<customer_id>`
+#### **GET `/api/recommendations/<customer_id>`**
 Returns personalized recommendations for a customer.
 
-**Response Format:**
-```json
-{
-  "success": true,
-  "customerInfo": {
-    "name": "Customer Name",
-    "cardCode": "C12345",
-    "location": "City, Country",
-    "phone": "123-456-7890",
-    "type": "sap"
-  },
-  "recommendations": [
-    {
-      "itemCode": "ITEM001",
-      "itemDescription": "Product Description",
-      "totalQuantity": 25,
-      "inStock": 50,
-      "available": true,
-      "reason": "Based on your order history",
-      "invoices": [
-        {
-          "docNum": "INV001",
-          "docDate": "2024-01-15",
-          "quantity": 10,
-          "price": 150.00
-        }
-      ],
-      "similarItemsByName": [...],
-      "similarItemsByCode": [...],
-      "tag": "Based on purchase history"
-    }
-  ]
-}
+
+---
+
+### **Feature: Predictive Ordering System**
+
+The Predictive Ordering System analyzes customer purchase patterns to predict when they should reorder items, providing intelligent suggestions like:
+- "Add your usual [ItemName]" - when customer is overdue for reorder based on historical patterns
+- "Stock running low on [ItemName]?" - when inventory is running low on a certain item
+
+### **Target Customers**
+- **SAP Customers Only**: Customers with CardCode starting with 'C'
+- **Pattern-Based**: Only customers with consistent ordering patterns (weekly to monthly intervals)
+- **Recent Activity**: Focuses on customers with orders in the last 1 year (365 days)
+
+### **Algorithm Architecture**
+
+
+**Pattern Analysis Process:**
+- **Data Collection**: Fetches all invoices for the customer from last 1 year
+- **Grouping**: Groups orders by ItemCode to analyze each item separately
+- **Interval Calculation**: Computes days between consecutive orders
+- **Statistical Analysis**: Calculates mean, median, min, and max intervals (rounded values)
+- **Pattern Validation**: Ensures patterns are within reasonable ranges (7-90 days)
+
+
+**Interval Analysis:**
+- **Weekly Patterns**: 7-14 days between orders
+- **Bi-weekly Patterns**: 14-21 days between orders  
+- **Monthly Patterns**: 21-90 days between orders
+- **Excluded Patterns**: Less than 7 days or more than 90 days
+
+
+
+**Inventory Analysis:**
+- **Stock Levels**: Current quantity on hand
+- **Stock Thresholds**: Based on customer's average order quantity (2x threshold)
+- **Low Stock Alerts**: When stock is below 2x average order quantity
+- **Item Validity**: Only suggest items with `Valid: 'tYES'` (exclude `Valid: 'tNO'`)
+
+
+**Suggestion Types:**
+
+**A. Usual Reorder Suggestions**
+```python
+if days_since_last_order >= avg_interval + 3 and days_since_last_order <= avg_interval + 10:
+    # Generate "Add your usual [ItemName]" suggestion
+```
+- **Trigger**: Customer is 3-10 days overdue for reorder based on historical pattern
+- **Priority**: High if overdue by more than 8 days, Medium otherwise
+- **Minimum Items**: At least 3 items per category for consistent display
+
+**B. Low Stock Alerts**
+```python
+if current_stock < stock_threshold and days_since_last_order <= 90:
+    # Generate "Stock running low on [ItemName]?" suggestion
+```
+- **Trigger**: Current stock is below 2x customer's average order quantity
+- **Priority**: High if stock is below average order quantity, Medium otherwise
+- **Negative Stock**: Items with negative stock marked as "Available on Request"
+- **Minimum Items**: At least 3 items per category for consistent display
+- **Rounded Values**: Clean integer display for days, decimal display for quantities
+
+### **Filtering Criteria**
+
+#### **Temporal Filters**
+- **Recent Activity**: Only items ordered in the last 1 year (365 days)
+- **Reasonable Intervals**: Only patterns between 7-90 days
+- **Overdue Limits**: Suggestions only for items overdue by 3-10 days
+
+#### **Pattern Quality Filters**
+- **Minimum Orders**: At least 2 orders required to calculate patterns
+- **Consistent Patterns**: Focus on customers with regular ordering habits
+- **Relevant Suggestions**: Only generate suggestions for actionable patterns
+- **Item Validity**: Only include items with `Valid: 'tYES'` status
+
+
+### **API Endpoints**
+
+#### **GET `/api/predictive/<customer_id>`**
+Returns predictive ordering suggestions for a specific customer.
+
+#### **GET `/api/predictive/all-sap`**
+Returns predictive suggestions for all SAP customers (limited to first 10 for performance).
+
+
+**CSV Columns:**
+```
+Customer ID, Customer Name, Customer Type, Country, Item Code, Item Name,
+Average Interval (days), Average Quantity (units), Average Price, Current Stock,
+Total Orders, Last Order Date
 ```
 
-### Features
+---
 
-#### ✅ **Personalized Recommendations**
-- Based on individual customer purchase history
-- Considers order frequency and quantities
-- Excludes previously purchased items from similar items
+### **Data Storage**
+- **Analysis Results**: Saved to `Feature2/analysis_results/` directory
+- **File Naming**: `analysis_{customer_id}_{timestamp}.json`
+- **Format**: Comprehensive JSON with all recommendation data
 
-#### ✅ **Multi-Criteria Similarity**
-- Name-based matching using regex patterns
-- Code-based structural similarity
-- Subcategory grouping for broader recommendations
+---
 
-#### ✅ **Real-Time Inventory**
-- Live stock level checking
-- Availability status for each recommendation
-- Stock quantity information
+## 🚀 Setup Instructions
 
-#### ✅ **Purchase History Integration**
-- Recent invoice details (last 3 purchases)
-- Price and quantity history
-- Order date tracking
-
-#### ✅ **Performance Optimization**
-- MongoDB indexes for fast queries
-- Efficient data aggregation
-- Cached item details
-
-#### ✅ **Data Export**
-- Automatic JSON export of analysis results
-- Timestamped files with customer ID
-- Error logging and debugging
-
-### Setup Instructions
-
-1. **Clone the repository:**
+### **1. Clone the Repository**
    ```bash
-   git clone https://github.com/aena800/PQF.git
-   cd PQF
+git clone https://github.com/aena800/AI-Sales-Module.git
+cd AI-Sales-Module
    ```
 
-2. **Install dependencies:**
+### **2. Install Dependencies**
    ```bash
    pip install flask flask-cors pymongo
    ```
 
-3. **Set up database indexes:**
+### **3. Configure MongoDB Connection**
+Update the connection string in `Feature3/predictive_ordering.py`:
+```python
+MONGODB_CONNECTION_STRING = "your_mongodb_connection_string"
+MONGODB_DATABASE = "your_database_name"
+```
+
+### **4. Set up Database Indexes**
    ```bash
    python setup_indexes.py
    ```
 
-4. **Run the application:**
+### **5. Run the Application**
    ```bash
    python app.py
    ```
 
-5. **Access the web interface:**
-   - Open browser to `http://localhost:5000`
-   - Enter a customer ID to get recommendations
+### **6. Access the Web Interface**
+- **Feature2 (Recommendations)**: `http://localhost:5000`
+- **Feature3 (Predictive)**: `http://localhost:5000/predictive`
 
-### Usage Examples
+---
 
-#### Command Line Interface
+## 📊 Usage Examples
+
+### **Feature3: Predictive Ordering System**
+
+#### **Web Interface**
+1. Navigate to `http://localhost:5000/predictive`
+2. Enter a SAP customer ID (e.g., "C12345")
+3. View smart cart suggestions organized by category
+4. Analyze order patterns in the table format
+5. Export pattern data to CSV
+
+#### **API Usage**
 ```bash
-python Recommend_items.py
-# Enter customer ID when prompted
-# View detailed recommendation analysis
+# Get predictions for specific customer
+curl http://localhost:5000/api/predictive/C12345
+
+# Get predictions for all SAP customers
+curl http://localhost:5000/api/predictive/all-sap
 ```
 
-#### Web Interface
-1. Navigate to the web application
-2. Enter a customer ID (e.g., "C12345")
-3. View personalized recommendations with similar items
-4. Check stock availability and purchase history
+### **Feature2: Recommendation System**
 
-#### API Usage
+#### **Web Interface**
+1. Navigate to `http://localhost:5000`
+2. Enter a customer ID
+3. View personalized recommendations with similar items
+
+#### **API Usage**
 ```bash
 curl http://localhost:5000/api/recommendations/C12345
 ```
 
-### Performance Considerations
+---
 
-- **Database Indexes**: Optimized for fast customer and item lookups
-- **Query Efficiency**: Single queries for bulk data retrieval
-- **Memory Management**: Processes items in batches
-- **Caching**: Item details cached during recommendation generation
-
-### Error Handling
-
-- Customer not found: Returns 404 with appropriate message
-- No order history: Returns empty recommendations with explanation
-- Database errors: Logged and returned as JSON
-- Invalid customer IDs: Validated before processing
 

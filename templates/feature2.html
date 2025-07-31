@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature2: Personalized Product Recommendations - Halal Food Deliveries</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .nav-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .nav-title {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .filter-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .filter-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .filter-box label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 150px;
+        }
+        
+        .filter-box select {
+            padding: 10px 15px;
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            color: #495057;
+            cursor: pointer;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .filter-box select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .filter-box select:hover {
+            border-color: #667eea;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-header">
+        <div class="nav-container">
+            <div class="nav-title">🤖 AI Sales Module</div>
+            <div class="nav-links">
+                <a href="/" class="nav-link active">📊 Product Recommendations</a>
+                <a href="/predictive" class="nav-link">🔮 Predictive Ordering</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Personalized Product Recommendation System</h1>
+            <p>Get personalized product recommendations based on customer order history</p>
+        </header>
+
+        <div class="search-section">
+            <div class="search-box">
+                <label for="customerId">Customer ID (CardCode):</label>
+                <input type="text" id="customerId" placeholder="Enter Customer ID (e.g., C2357)" />
+                <button id="searchBtn" onclick="getRecommendations()">Get Recommendations</button>
+            </div>
+        </div>
+
+        <div id="filterSection" class="filter-section hidden">
+            <div class="filter-box">
+                <label for="filterType">Filter Similar Items By:</label>
+                <select id="filterType" onchange="filterRecommendations()">
+                    <option value="all">All Similar Items</option>
+                    <option value="name">Name</option>
+                    <option value="category">Category</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Analyzing customer data...</p>
+        </div>
+
+        <div id="customerInfo" class="customer-info hidden">
+            <h2>Customer Information</h2>
+            <div class="customer-details">
+                <div class="detail-item">
+                    <span class="label">Name:</span>
+                    <span id="customerName">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Customer ID:</span>
+                    <span id="customerCode">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Location:</span>
+                    <span id="customerLocation">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Phone:</span>
+                    <span id="customerPhone">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Type:</span>
+                    <span id="customerType">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="recommendations" class="recommendations hidden">
+            <h2>Personalized Recommendations</h2>
+            <div id="recommendationsList"></div>
+        </div>
+
+        <div id="error" class="error hidden">
+            <h3>Error</h3>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html> 
