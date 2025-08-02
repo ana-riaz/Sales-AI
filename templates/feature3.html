@@ -9,7 +9,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: white;
             min-height: 100vh;
         }
         .nav-header {
@@ -99,7 +99,7 @@
             border-color: #667eea;
         }
         button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #667eea;
             color: white;
             border: none;
             padding: 12px 25px;
@@ -313,17 +313,17 @@
 <body>
     <div class="nav-header">
         <div class="nav-container">
-            <div class="nav-title">🤖 AI Sales Module</div>
+            <div class="nav-title">AI-Sales Module</div>
             <div class="nav-links">
-                <a href="/" class="nav-link">📊 Product Recommendations</a>
-                <a href="/predictive" class="nav-link active">🔮 Predictive Ordering</a>
+                <a href="/" class="nav-link">Product Recommendations</a>
+                <a href="/predictive" class="nav-link active">Predictive Ordering</a>
             </div>
         </div>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1>🤖 Predictive Ordering System</h1>
+            <h1>Predictive Ordering System</h1>
             <p>AI-powered smart cart suggestions for Halal Food Deliveries</p>
         </div>
         
@@ -343,9 +343,9 @@
                  <div id="suggestions" class="suggestions"></div>
                  <div id="patterns" class="patterns-section">
                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                         <h3>📊 Order Patterns Analysis</h3>
+                         <h3>Order Patterns Analysis</h3>
                          <button onclick="exportPatternsToCSV()" style="background: #28a745; font-size: 14px; padding: 8px 15px;">
-                             📥 Export to CSV
+                             Export to CSV
                          </button>
                      </div>
                      <div id="patternsContent"></div>
@@ -452,8 +452,8 @@
                 
                 // Display each category
                 const categoryNames = {
-                    'usual_reorder': '🔄 Usual Reorder Suggestions',
-                    'low_stock': '⚠️ Low Stock Alerts'
+                    'usual_reorder': 'Usual Reorder Suggestions',
+                    'low_stock': 'Low Stock Alerts'
                 };
                 
                 Object.keys(groupedSuggestions).forEach(type => {
@@ -488,7 +488,7 @@
                 });
             } else {
                 suggestionsDiv.innerHTML = `
-                    <h3>💡 Smart Cart Suggestions</h3>
+                    <h3>Smart Cart Suggestions</h3>
                     <div class="suggestion-card">
                         <div class="suggestion-header">
                             <div class="suggestion-message">No Recent Patterns Found</div>
@@ -496,7 +496,7 @@
                         </div>
                         <div class="suggestion-reason">
                             No suggestions available because:<br>
-                            • No orders in the last 6 months, OR<br>
+                            • No orders in the past 1 year, OR<br>
                             • Order patterns are outside weekly/monthly range (7-90 days), OR<br>
                             • Customer doesn't have consistent ordering patterns
                         </div>

@@ -75,8 +75,11 @@ def get_item_details(item_codes, items_col):
         return {}
     
     item_details = {}
-    # Use a single query to get all item details at once
-    items = list(items_col.find({"ItemCode": {"$in": item_codes}}))
+    # Use a single query to get all item details at once (only valid items)
+    items = list(items_col.find({
+        "ItemCode": {"$in": item_codes},
+        "Valid": "tYES"  # Only valid items
+    }))
     
     for item in items:
         item_details[item["ItemCode"]] = {
@@ -114,6 +117,7 @@ def find_similar_items_by_name(item_code, items_col, item_name, purchased_codes=
     query = {
         "ItemCode": {"$ne": item_code},
         "QuantityOnStock": {"$gt": 0},  # Only in-stock items
+        "Valid": "tYES",  # Only valid items
         "$or": name_conditions
     }
     
@@ -148,8 +152,11 @@ def find_similar_items_by_code(item_code, items_col, purchased_codes=None, limit
     if not item_code:
         return []
     
-    # First, get the current item's category (ItemsGroupCode)
-    current_item = items_col.find_one({"ItemCode": item_code})
+    # First, get the current item's category (ItemsGroupCode) - only if valid
+    current_item = items_col.find_one({
+        "ItemCode": item_code,
+        "Valid": "tYES"  # Only valid items
+    })
     if not current_item:
         return []
     
@@ -161,7 +168,8 @@ def find_similar_items_by_code(item_code, items_col, purchased_codes=None, limit
     query = {
         "ItemsGroupCode": current_category,
         "ItemCode": {"$ne": item_code},
-        "QuantityOnStock": {"$gt": 0}
+        "QuantityOnStock": {"$gt": 0},
+        "Valid": "tYES"  # Only valid items
     }
     
     # Exclude already purchased items
