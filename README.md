@@ -80,6 +80,7 @@ Increases average order value through intelligent product bundling
 ---
 ## Data Flow
 
+```
 graph LR
     A[SAP System] --> B[(MongoDB Atlas)]
     B --> C[Flask API]
@@ -99,5 +100,4 @@ graph LR
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style B fill:#bbf,stroke:#333,stroke-width:2px
     style F fill:#dfd,stroke:#333,stroke-width:2px
-
-
+```
