@@ -204,7 +204,7 @@ Returns customer's recent purchase history from invoices.
 
 ### **1. Clone the Repository**
    ```bash
-git clone https://github.com/aena800/AI-Sales-Module.git
+git clone https://github.com/ana-riaz/AI-Sales-Module.git
 cd AI-Sales-Module
    ```
 
