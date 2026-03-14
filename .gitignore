@@ -1,16 +1,35 @@
 # Virtual Environment
-#venv/
-
+venv/
+env/
 
 # Python cache files
 __pycache__/
 *.py[cod]
 *$py.class
 
-
 # Environments
 .env
+.env.local
+.env.production
 
-# web interface
-Feature2/static/
-Seature2/templates/
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
