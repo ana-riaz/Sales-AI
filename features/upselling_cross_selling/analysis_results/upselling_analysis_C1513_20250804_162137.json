@@ -1,0 +1,526 @@
+{
+  "customer_info": {
+    "card_code": "C1513",
+    "card_name": "EDENDI",
+    "customer_type": "sap",
+    "location": "MEAUX, FR"
+  },
+  "bundle_suggestions": [
+    {
+      "type": "bundle_completion",
+      "message": "Complete this deal package! You have 3 out of 5 items. Add 2 more to get the full bundle",
+      "missing_items": [
+        {
+          "item_code": "EMB46",
+          "name": "450ML PLASTIC BOITE AVEC COUVERCLE X 250",
+          "stock": 27.8,
+          "price": 24.99
+        },
+        {
+          "item_code": "sau78",
+          "name": "SAUCE DORO ALGERIENNE 4.6KG",
+          "stock": 73,
+          "price": 12.49
+        }
+      ],
+      "customer_bundle_items": [
+        "sau88",
+        "sau89",
+        "sau91"
+      ],
+      "customer_bundle_item_names": [
+        {
+          "item_code": "sau88",
+          "name": "DELICIA SNACK MAYONNAISE 4.5KG"
+        },
+        {
+          "item_code": "sau89",
+          "name": "DELICIA BARBACUE 4.5KG"
+        },
+        {
+          "item_code": "sau91",
+          "name": "DELICIA KETCHUP 4.5KG"
+        }
+      ],
+      "complete_deal_items": [
+        {
+          "item_code": "EMB46",
+          "name": "450ML PLASTIC BOITE AVEC COUVERCLE X 250",
+          "stock": 27.8,
+          "price": 24.99,
+          "customer_has": false
+        },
+        {
+          "item_code": "sau78",
+          "name": "SAUCE DORO ALGERIENNE 4.6KG",
+          "stock": 73,
+          "price": 12.49,
+          "customer_has": false
+        },
+        {
+          "item_code": "sau88",
+          "name": "DELICIA SNACK MAYONNAISE 4.5KG",
+          "stock": -130,
+          "price": 10.99,
+          "customer_has": true
+        },
+        {
+          "item_code": "sau89",
+          "name": "DELICIA BARBACUE 4.5KG",
+          "stock": 604,
+          "price": 10.99,
+          "customer_has": true
+        },
+        {
+          "item_code": "sau91",
+          "name": "DELICIA KETCHUP 4.5KG",
+          "stock": 315,
+          "price": 10.99,
+          "customer_has": true
+        }
+      ],
+      "bundle_frequency": 13,
+      "total_bundle_items": 5,
+      "customer_specific": true
+    },
+    {
+      "type": "bundle_completion",
+      "message": "Complete this deal package! You have 5 out of 7 items. Add 2 more to get the full bundle",
+      "missing_items": [
+        {
+          "item_code": "EMB46",
+          "name": "450ML PLASTIC BOITE AVEC COUVERCLE X 250",
+          "stock": 27.8,
+          "price": 24.99
+        },
+        {
+          "item_code": "sau78",
+          "name": "SAUCE DORO ALGERIENNE 4.6KG",
+          "stock": 73,
+          "price": 12.49
+        }
+      ],
+      "customer_bundle_items": [
+        "sau88",
+        "sau84",
+        "sau82",
+        "sau91",
+        "sau89"
+      ],
+      "customer_bundle_item_names": [
+        {
+          "item_code": "sau88",
+          "name": "DELICIA SNACK MAYONNAISE 4.5KG"
+        },
+        {
+          "item_code": "sau84",
+          "name": "SAUCE DORO BIGGI 4.6KG"
+        },
+        {
+          "item_code": "sau82",
+          "name": "SAUCE DORO PITTA 4.6KG"
+        },
+        {
+          "item_code": "sau91",
+          "name": "DELICIA KETCHUP 4.5KG"
+        },
+        {
+          "item_code": "sau89",
+          "name": "DELICIA BARBACUE 4.5KG"
+        }
+      ],
+      "complete_deal_items": [
+        {
+          "item_code": "EMB46",
+          "name": "450ML PLASTIC BOITE AVEC COUVERCLE X 250",
+          "stock": 27.8,
+          "price": 24.99,
+          "customer_has": false
+        },
+        {
+          "item_code": "sau78",
+          "name": "SAUCE DORO ALGERIENNE 4.6KG",
+          "stock": 73,
+          "price": 12.49,
+          "customer_has": false
+        },
+        {
+          "item_code": "sau82",
+          "name": "SAUCE DORO PITTA 4.6KG",
+          "stock": 201,
+          "price": 13.49,
+          "customer_has": true
+        },
+        {
+          "item_code": "sau84",
+          "name": "SAUCE DORO BIGGI 4.6KG",
+          "stock": 39,
+          "price": 13.49,
+          "customer_has": true
+        },
+        {
+          "item_code": "sau88",
+          "name": "DELICIA SNACK MAYONNAISE 4.5KG",
+          "stock": -130,
+          "price": 10.99,
+          "customer_has": true
+        },
+        {
+          "item_code": "sau89",
+          "name": "DELICIA BARBACUE 4.5KG",
+          "stock": 604,
+          "price": 10.99,
+          "customer_has": true
+        },
+        {
+          "item_code": "sau91",
+          "name": "DELICIA KETCHUP 4.5KG",
+          "stock": 315,
+          "price": 10.99,
+          "customer_has": true
+        }
+      ],
+      "bundle_frequency": 12,
+      "total_bundle_items": 7,
+      "customer_specific": true
+    },
+    {
+      "type": "bundle_completion",
+      "message": "Complete this deal package! You have 1 out of 2 items. Add 1 more to get the full bundle",
+      "missing_items": [
+        {
+          "item_code": "farine58",
+          "name": "HOT PERI PERI BASTE 2KG",
+          "stock": 84.5,
+          "price": 18.99
+        }
+      ],
+      "customer_bundle_items": [
+        "sau88"
+      ],
+      "customer_bundle_item_names": [
+        {
+          "item_code": "sau88",
+          "name": "DELICIA SNACK MAYONNAISE 4.5KG"
+        }
+      ],
+      "complete_deal_items": [
+        {
+          "item_code": "farine58",
+          "name": "HOT PERI PERI BASTE 2KG",
+          "stock": 84.5,
+          "price": 18.99,
+          "customer_has": false
+        },
+        {
+          "item_code": "sau88",
+          "name": "DELICIA SNACK MAYONNAISE 4.5KG",
+          "stock": -130,
+          "price": 10.99,
+          "customer_has": true
+        }
+      ],
+      "bundle_frequency": 11,
+      "total_bundle_items": 2,
+      "customer_specific": true
+    },
+    {
+      "type": "bundle_completion",
+      "message": "Complete this deal package! You have 1 out of 2 items. Add 1 more to get the full bundle",
+      "missing_items": [
+        {
+          "item_code": "sau78",
+          "name": "SAUCE DORO ALGERIENNE 4.6KG",
+          "stock": 73,
+          "price": 12.49
+        }
+      ],
+      "customer_bundle_items": [
+        "sau81"
+      ],
+      "customer_bundle_item_names": [
+        {
+          "item_code": "sau81",
+          "name": "SAUCE DORO SAMOURAI 4.6KG"
+        }
+      ],
+      "complete_deal_items": [
+        {
+          "item_code": "sau78",
+          "name": "SAUCE DORO ALGERIENNE 4.6KG",
+          "stock": 73,
+          "price": 12.49,
+          "customer_has": false
+        },
+        {
+          "item_code": "sau81",
+          "name": "SAUCE DORO SAMOURAI 4.6KG",
+          "stock": -20,
+          "price": 11.49,
+          "customer_has": true
+        }
+      ],
+      "bundle_frequency": 9,
+      "total_bundle_items": 2,
+      "customer_specific": true
+    },
+    {
+      "type": "bundle_completion",
+      "message": "Complete this deal package! You have 4 out of 6 items. Add 2 more to get the full bundle",
+      "missing_items": [
+        {
+          "item_code": "sau83",
+          "name": "SAUCE DORO MAYONNAISE 4.6KG",
+          "stock": -114,
+          "price": 8.99
+        },
+        {
+          "item_code": "sau78",
+          "name": "SAUCE DORO ALGERIENNE 4.6KG",
+          "stock": 73,
+          "price": 12.49
+        }
+      ],
+      "customer_bundle_items": [
+        "sau88",
+        "sau80",
+        "sau84",
+        "sau89"
+      ],
+      "customer_bundle_item_names": [
+        {
+          "item_code": "sau88",
+          "name": "DELICIA SNACK MAYONNAISE 4.5KG"
+        },
+        {
+          "item_code": "sau80",
+          "name": "SAUCE DORO KETCHUP 4.6KG"
+        },
+        {
+          "item_code": "sau84",
+          "name": "SAUCE DORO BIGGI 4.6KG"
+        },
+        {
+          "item_code": "sau89",
+          "name": "DELICIA BARBACUE 4.5KG"
+        }
+      ],
+      "complete_deal_items": [
+        {
+          "item_code": "sau78",
+          "name": "SAUCE DORO ALGERIENNE 4.6KG",
+          "stock": 73,
+          "price": 12.49,
+          "customer_has": false
+        },
+        {
+          "item_code": "sau80",
+          "name": "SAUCE DORO KETCHUP 4.6KG",
+          "stock": -204,
+          "price": 7.99,
+          "customer_has": true
+        },
+        {
+          "item_code": "sau83",
+          "name": "SAUCE DORO MAYONNAISE 4.6KG",
+          "stock": -114,
+          "price": 8.99,
+          "customer_has": false
+        },
+        {
+          "item_code": "sau84",
+          "name": "SAUCE DORO BIGGI 4.6KG",
+          "stock": 39,
+          "price": 13.49,
+          "customer_has": true
+        },
+        {
+          "item_code": "sau88",
+          "name": "DELICIA SNACK MAYONNAISE 4.5KG",
+          "stock": -130,
+          "price": 10.99,
+          "customer_has": true
+        },
+        {
+          "item_code": "sau89",
+          "name": "DELICIA BARBACUE 4.5KG",
+          "stock": 604,
+          "price": 10.99,
+          "customer_has": true
+        }
+      ],
+      "bundle_frequency": 9,
+      "total_bundle_items": 6,
+      "customer_specific": true
+    }
+  ],
+  "complementary_items": [
+    {
+      "type": "complementary",
+      "message": "Often included with DELICIA BARBACUE 4.5KG in deal packages",
+      "item_code": "sau78",
+      "name": "SAUCE DORO ALGERIENNE 4.6KG",
+      "stock": 73,
+      "price": 12.49,
+      "frequency": 57,
+      "customer_specific": true
+    },
+    {
+      "type": "complementary",
+      "message": "Often included with SAUCE DORO KETCHUP 4.6KG in deal packages",
+      "item_code": "sau83",
+      "name": "SAUCE DORO MAYONNAISE 4.6KG",
+      "stock": -114,
+      "price": 8.99,
+      "frequency": 31,
+      "customer_specific": true
+    },
+    {
+      "type": "complementary",
+      "message": "Often included with GARAM MASALA 1KG in deal packages",
+      "item_code": "EPI32",
+      "name": "SEL FIN 1KG",
+      "stock": 225,
+      "price": 0.79,
+      "frequency": 7,
+      "customer_specific": true
+    }
+  ],
+  "popular_addons": [
+    {
+      "type": "popular_addon",
+      "message": "Popular item - appears in 122 deal packages",
+      "item_code": "sau78",
+      "name": "SAUCE DORO ALGERIENNE 4.6KG",
+      "stock": 73,
+      "price": 12.49,
+      "frequency": 122,
+      "customer_specific": true
+    },
+    {
+      "type": "popular_addon",
+      "message": "Popular item - appears in 69 deal packages",
+      "item_code": "sau83",
+      "name": "SAUCE DORO MAYONNAISE 4.6KG",
+      "stock": -114,
+      "price": 8.99,
+      "frequency": 69,
+      "customer_specific": true
+    },
+    {
+      "type": "popular_addon",
+      "message": "Popular item - appears in 60 deal packages",
+      "item_code": "EPI32",
+      "name": "SEL FIN 1KG",
+      "stock": 225,
+      "price": 0.79,
+      "frequency": 60,
+      "customer_specific": true
+    },
+    {
+      "type": "popular_addon",
+      "message": "Popular item - appears in 38 deal packages",
+      "item_code": "EMB46",
+      "name": "450ML PLASTIC BOITE AVEC COUVERCLE X 250",
+      "stock": 27.8,
+      "price": 24.99,
+      "frequency": 38,
+      "customer_specific": true
+    },
+    {
+      "type": "popular_addon",
+      "message": "Popular item - appears in 34 deal packages",
+      "item_code": "sau90",
+      "name": "DELICIA CHILLI THAI 4.5KG",
+      "stock": 531,
+      "price": 10.99,
+      "frequency": 34,
+      "customer_specific": true
+    }
+  ],
+  "customer_specific_suggestions": [
+    {
+      "type": "customer_specific",
+      "message": "Based on your category preference (purchased 111 times) - this item is available in deal packages",
+      "item_code": "sau78",
+      "name": "SAUCE DORO ALGERIENNE 4.6KG",
+      "stock": 73,
+      "price": 12.49,
+      "frequency": 122,
+      "category": 126,
+      "customer_specific": true
+    },
+    {
+      "type": "customer_specific",
+      "message": "Based on your category preference (purchased 111 times) - this item is available in deal packages",
+      "item_code": "sau83",
+      "name": "SAUCE DORO MAYONNAISE 4.6KG",
+      "stock": -114,
+      "price": 8.99,
+      "frequency": 69,
+      "category": 126,
+      "customer_specific": true
+    },
+    {
+      "type": "customer_specific",
+      "message": "Based on your category preference (purchased 116 times) - this item is available in deal packages",
+      "item_code": "EMB46",
+      "name": "450ML PLASTIC BOITE AVEC COUVERCLE X 250",
+      "stock": 27.8,
+      "price": 24.99,
+      "frequency": 38,
+      "category": 129,
+      "customer_specific": true
+    },
+    {
+      "type": "customer_specific",
+      "message": "Based on your category preference (purchased 236 times) - this item is available in deal packages",
+      "item_code": "bo62",
+      "name": "7Up Cherry 24 x 33cl",
+      "stock": 1590,
+      "price": 10.99,
+      "frequency": 34,
+      "category": 123,
+      "customer_specific": true
+    },
+    {
+      "type": "customer_specific",
+      "message": "Based on your category preference (purchased 116 times) - this item is available in deal packages",
+      "item_code": "emb86",
+      "name": "GOBELETS EN CARTON 4OZ X 50PC",
+      "stock": -425.5,
+      "price": 1.09,
+      "frequency": 33,
+      "category": 129,
+      "customer_specific": true
+    },
+    {
+      "type": "customer_specific",
+      "message": "Similar to bot16 (you purchased 13 times) - available in deal packages",
+      "item_code": "bot85",
+      "name": "PEFECTLY CLEAR SUMMER FRUITS 12 X 500ML",
+      "stock": 244,
+      "price": 4.79,
+      "frequency": 7,
+      "category": 124,
+      "customer_specific": true
+    },
+    {
+      "type": "customer_specific",
+      "message": "Similar to cake18 (you purchased 10 times) - available in deal packages",
+      "item_code": "cake41",
+      "name": "GATEAU OREO X 16PCS",
+      "stock": 20,
+      "price": 23.99,
+      "frequency": 2,
+      "category": 125,
+      "customer_specific": true
+    }
+  ],
+  "analysis_summary": {
+    "total_bundles_analyzed": 187,
+    "total_items_analyzed": 62,
+    "customer_items_count": 557,
+    "recommendations_generated": 20
+  }
+}

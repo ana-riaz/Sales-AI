@@ -1,53 +1,27 @@
-# AI Sales Module - Halal Food Deliveries
+# AI Sales Intelligence Platform
 
-A comprehensive AI-powered sales module built with Python Flask, MongoDB, and JavaScript. The system provides both personalized product recommendations (Feature2) and predictive ordering suggestions (Feature3) for SAP customers in the halal food delivery industry.
+A comprehensive AI-powered sales intelligence platform built with Python Flask, MongoDB, and JavaScript. The system provides personalized product recommendations, predictive ordering suggestions, and AI-driven upselling and cross-selling for SAP customers in the halal food delivery industry.
 
 ## System Overview
 
 Main AI features designed to enhance customer experience and drive sales:
 
-### **Feature: Personalized Product Recommendation System**
+### **Personalized Product Recommendations**
 
 1. **Purchase History Analysis** - Analyzes customer's past orders
 2. **Similarity Matching** - Finds similar products using multiple criteria
 3. **Inventory Integration** - Checks real-time stock availability
 4. **Frequency Analysis** - Prioritizes frequently ordered items
 
-### **Step-by-Step Recommendation Process**
-
-#### 1. **Customer Order History Retrieval**
-- Queries MongoDB for all invoices belonging to the customer
-- Extracts item codes, quantities, dates, and prices
-- Filters out items with zero quantities (returns/exchanges)
-- Builds a comprehensive purchase profile
-
-#### 2. **Similarity Matching (Two Filters)**
-
-**A. Name-Based Similarity**
-- Uses regex pattern matching on item names
-- Extracts key words and finds items with similar naming patterns
-
-**B. Category-Based Similarity**
-- Uses ItemsGroupCode from the database
-- Groups items in the same product category
-
-### **API Endpoints**
-
-#### **GET `/api/recommendations/<customer_id>`**
-Returns personalized recommendations for a customer.
-
-
----
-
-### **Feature: Predictive Ordering System**
+### **Predictive Ordering System**
 
 The Predictive Ordering System analyzes customer purchase patterns to predict when they should reorder items, providing intelligent suggestions like:
 - "Add your usual [ItemName]" - when customer is overdue for reorder based on historical patterns
 - "Stock running low on [ItemName]?" - when inventory is running low on a certain item
 
-### **Target Customers**
-- **SAP Customers Only**: Customers with CardCode starting with 'C'
-- **Pattern-Based**: Only customers with consistent ordering patterns (weekly to monthly intervals)
+### **AI-Driven Upselling and Cross-Selling**
+
+The AI-Driven Upselling and Cross-Selling System analyzes deal patterns to provide intelligent product recommendations that increase average order value and customer satisfaction.
 - **Recent Activity**: Focuses on customers with orders in the last 1 year (365 days)
 
 ### **Algorithm Architecture**
@@ -130,8 +104,106 @@ Total Orders, Last Order Date
 
 ---
 
+### **Feature: AI-Driven Upselling and Cross-Selling System**
+
+The AI-Driven Upselling and Cross-Selling System analyzes deal patterns to provide intelligent product recommendations that increase average order value and customer satisfaction.
+
+### **Target Customers**
+- **SAP Customers Only**: Customers with `customerType: "sap"`
+- **Valid Products Only**: Items with `Valid: "tYES"` status
+- **Deal-Based Analysis**: Focuses on actual deal combinations and purchase patterns
+
+### **Algorithm Architecture**
+
+**Bundle Analysis Process:**
+- **Deal Collection**: Analyzes all deals with multiple products
+- **Pattern Recognition**: Identifies items frequently purchased together
+- **Frequency Analysis**: Calculates how often items appear in bundles
+- **Complementary Mapping**: Maps items that are frequently bought together
+
+**Recommendation Types:**
+
+**A. Bundle Completion Suggestions**
+```python
+if customer_items_set.intersection(bundle_items_set):
+    missing_items = bundle_items_set - customer_items_set
+    # Generate "Complete your bundle!" suggestions
+```
+- **Trigger**: Customer's items are part of a popular bundle
+- **Message**: "Complete your bundle! Other customers buy these X items together"
+- **Priority**: Based on bundle frequency (minimum 2 occurrences)
+
+**B. Complementary Item Suggestions**
+```python
+if item_code in complementary_items and frequency >= 2:
+    # Generate "Frequently bought with [ItemCode]" suggestions
+```
+- **Trigger**: Items frequently purchased with customer's current items
+- **Message**: "Frequently bought with [ItemCode]"
+- **Priority**: Based on co-purchase frequency
+
+**C. Popular Add-on Suggestions**
+```python
+if item_code in top_items and frequency >= 3:
+    # Generate "Popular item - bought X times" suggestions
+```
+- **Trigger**: High-frequency items not in customer's current selection
+- **Message**: "Popular item - bought X times"
+- **Priority**: Based on overall purchase frequency
+
+### **Filtering Criteria**
+
+#### **Product Filters**
+- **Valid Items Only**: Only items with `Valid: "tYES"` status
+- **Stock Availability**: Shows current stock levels for each recommendation
+- **Price Information**: Displays default pricing from PriceList 1
+
+#### **Bundle Quality Filters**
+- **Minimum Frequency**: Bundles must appear at least 2 times in deals
+- **Multiple Items**: Only analyzes deals with 2+ products
+- **Unique Patterns**: Removes duplicate recommendations
+
+### **API Endpoints**
+
+#### **GET `/api/upselling/recommendations/<customer_id>`**
+Generates customer-specific upselling and cross-selling recommendations based on their purchase history.
+
+**Response:**
+```json
+{
+  "success": true,
+  "customer_info": {
+    "card_code": "C12345",
+    "card_name": "Customer Name",
+    "customer_type": "sap",
+    "location": "City, Country"
+  },
+  "bundle_suggestions": [...],
+  "complementary_items": [...],
+  "popular_addons": [...],
+  "customer_specific_suggestions": [...],
+  "analysis_summary": {...}
+}
+```
+
+
+
+#### **GET `/api/upselling/customer-history/<customer_id>`**
+Returns customer's recent purchase history from invoices.
+
+**Response:**
+```json
+{
+  "success": true,
+  "customer_id": "C12345",
+  "items": ["item1", "item2", "item3"]
+}
+```
+
+---
+
 ### **Data Storage**
-- **Analysis Results**: Saved to `Feature2/analysis_results/` directory
+- **Analysis Results**: Saved to `features/personalized_recommendations/analysis_results/` directory
 - **File Naming**: `analysis_{customer_id}_{timestamp}.json`
 - **Format**: Comprehensive JSON with all recommendation data
 
@@ -150,11 +222,11 @@ cd AI-Sales-Module
    pip install flask flask-cors pymongo
    ```
 
-### **3. Configure MongoDB Connection**
-Update the connection string in `Feature3/predictive_ordering.py`:
-```python
-MONGODB_CONNECTION_STRING = "your_mongodb_connection_string"
-MONGODB_DATABASE = "your_database_name"
+### **3. Configure Environment Variables**
+Create a `.env` file in the root directory with your MongoDB credentials:
+```env
+MONGODB_CONNECTION_STRING=your_mongodb_connection_string
+MONGODB_DATABASE=your_database_name
 ```
 
 ### **4. Set up Database Indexes**
@@ -168,14 +240,32 @@ MONGODB_DATABASE = "your_database_name"
    ```
 
 ### **6. Access the Web Interface**
-- **Feature2 (Recommendations)**: `http://localhost:5000`
-- **Feature3 (Predictive)**: `http://localhost:5000/predictive`
+- **Personalized Recommendations**: `http://localhost:5000`
+- **Predictive Ordering**: `http://localhost:5000/predictive`
+- **Upselling & Cross-Selling**: `http://localhost:5000/upselling`
 
 ---
 
 ## 📊 Usage Examples
 
-### **Feature3: Predictive Ordering System**
+### **Feature4: AI-Driven Upselling and Cross-Selling**
+
+#### **Web Interface**
+1. Navigate to `http://localhost:5000/upselling`
+2. Enter a SAP customer ID (e.g., C12345)
+3. View bundle suggestions, complementary items, and popular add-ons
+4. Analyze recommendation statistics and export results
+
+#### **API Usage**
+```bash
+# Generate customer-specific recommendations
+curl http://localhost:5000/api/upselling/recommendations/C12345
+
+# Get customer purchase history
+curl http://localhost:5000/api/upselling/customer-history/C12345
+```
+
+### **Predictive Ordering System**
 
 #### **Web Interface**
 1. Navigate to `http://localhost:5000/predictive`
@@ -193,7 +283,7 @@ curl http://localhost:5000/api/predictive/C12345
 curl http://localhost:5000/api/predictive/all-sap
 ```
 
-### **Feature2: Recommendation System**
+### **Personalized Product Recommendations**
 
 #### **Web Interface**
 1. Navigate to `http://localhost:5000`

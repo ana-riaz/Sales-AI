@@ -3,8 +3,13 @@ from flask_cors import CORS
 import json
 from datetime import datetime
 import os
-from Feature2.Recommend_items import get_personalized_recommendations, customers_col, invoices_col, items_col
-from Feature3.predictive_ordering import get_predictive_recommendations, get_all_sap_predictions
+from dotenv import load_dotenv
+from features.personalized_recommendations.Recommend_items import get_personalized_recommendations, customers_col, invoices_col, items_col
+from features.predictive_ordering.predictive_ordering import get_predictive_recommendations, get_all_sap_predictions
+from features.upselling_cross_selling.upselling_engine import UpsellingEngine
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -12,7 +17,7 @@ CORS(app)
 def save_analysis_to_json(analysis_result, customer_id):
     """Save analysis results to a JSON file."""
     # Create results directory if it doesn't exist
-    results_dir = "Feature2/analysis_results"
+    results_dir = "features/personalized_recommendations/analysis_results"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
     
@@ -29,15 +34,19 @@ def save_analysis_to_json(analysis_result, customer_id):
 
 @app.route('/')
 def index():
-    return render_template('feature2.html')
+    return render_template('personalized_recommendations.html')
 
 @app.route('/recommendations')
 def recommendations_index():
-    return render_template('feature2.html')
+    return render_template('personalized_recommendations.html')
 
 @app.route('/predictive')
 def predictive_index():
-    return render_template('feature3.html')
+    return render_template('predictive_ordering.html')
+
+@app.route('/upselling')
+def upselling_index():
+    return render_template('upselling_cross_selling.html')
 
 @app.route('/api/recommendations/<customer_id>')
 def get_recommendations_api(customer_id):
@@ -186,6 +195,69 @@ def get_all_sap_predictive_api():
             "success": True,
             "total_customers": len(all_predictions),
             "predictions": all_predictions
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"An error occurred: {str(e)}"
+        }), 500
+
+# Feature4: Upselling and Cross-Selling Endpoints
+@app.route('/api/upselling/recommendations/<customer_id>', methods=['GET'])
+def get_upselling_recommendations(customer_id):
+    """Generate customer-specific upselling and cross-selling recommendations"""
+    try:
+        # Initialize upselling engine
+        upselling_engine = UpsellingEngine(
+            connection_string=os.getenv('MONGODB_CONNECTION_STRING'),
+            database_name=os.getenv('MONGODB_DATABASE')
+        )
+        
+        # Generate recommendations for the customer
+        recommendations = upselling_engine.generate_recommendations(customer_id)
+        
+        return jsonify({
+            "success": True,
+            "customer_info": recommendations['customer_info'],
+            "bundle_suggestions": recommendations['bundle_suggestions'],
+            "complementary_items": recommendations['complementary_items'],
+            "popular_addons": recommendations['popular_addons'],
+            "customer_specific_suggestions": recommendations['customer_specific_suggestions'],
+            "analysis_summary": recommendations['analysis_summary']
+        })
+        
+    except ValueError as e:
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        }), 404
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"An error occurred: {str(e)}"
+        }), 500
+
+
+
+@app.route('/api/upselling/customer-history/<customer_id>')
+def get_customer_history(customer_id):
+    """Get customer's recent purchase history"""
+    try:
+        # Initialize upselling engine
+        upselling_engine = UpsellingEngine(
+            connection_string=os.getenv('MONGODB_CONNECTION_STRING'),
+            database_name=os.getenv('MONGODB_DATABASE')
+        )
+        
+        # Get customer purchase history
+        recent_items = upselling_engine.get_customer_purchase_history(customer_id)
+        
+        return jsonify({
+            "success": True,
+            "customer_id": customer_id,
+            "items": recent_items
         })
         
     except Exception as e:

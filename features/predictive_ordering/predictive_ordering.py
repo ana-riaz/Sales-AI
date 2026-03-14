@@ -5,9 +5,13 @@ import json
 import os
 from collections import defaultdict
 import statistics
+from dotenv import load_dotenv
 
-MONGODB_CONNECTION_STRING = "mongodb+srv://sohaibsipra869:nvidia940MX@cluster0.q1so4va.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-MONGODB_DATABASE = "test"
+# Load environment variables
+load_dotenv()
+
+MONGODB_CONNECTION_STRING = os.getenv('MONGODB_CONNECTION_STRING')
+MONGODB_DATABASE = os.getenv('MONGODB_DATABASE')
 
 # Connect to MongoDB
 client = MongoClient(MONGODB_CONNECTION_STRING, server_api=ServerApi('1'))
