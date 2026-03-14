@@ -86,15 +86,6 @@ if current_stock < stock_threshold and days_since_last_order <= 90:
 - **Item Validity**: Only include items with `Valid: 'tYES'` status
 
 
-### **API Endpoints**
-
-#### **GET `/api/predictive/<customer_id>`**
-Returns predictive ordering suggestions for a specific customer.
-
-#### **GET `/api/predictive/all-sap`**
-Returns predictive suggestions for all SAP customers (limited to first 10 for performance).
-
-
 **CSV Columns:**
 ```
 Customer ID, Customer Name, Customer Type, Country, Item Code, Item Name,
@@ -298,3 +289,5 @@ curl http://localhost:5000/api/recommendations/C12345
 ---
 
 
+=======
+>>>>>>> 9ffa5c0f4cd4d9288066798b5559cda0841465c9
