@@ -30,6 +30,9 @@ logs/
 *.db
 *.sqlite3
 
+# Analysis results (do not commit generated demo/analysis output)
+**/analysis_results/
+
 # Temporary files
 *.tmp
 *.temp

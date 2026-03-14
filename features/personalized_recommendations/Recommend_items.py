@@ -12,21 +12,33 @@ load_dotenv()
 MONGODB_CONNECTION_STRING = os.getenv('MONGODB_CONNECTION_STRING')
 MONGODB_DATABASE = os.getenv('MONGODB_DATABASE')
 
-# Connect to MongoDB
-client = MongoClient(MONGODB_CONNECTION_STRING, server_api=ServerApi('1'))
-db = client[MONGODB_DATABASE]
+# Connect to MongoDB (only if configured)
+client = None
+db = None
+customers_col = None
+invoices_col = None
+items_col = None
 
-# Access collections
-customers_col = db["customers"]
-invoices_col = db["invoices"]
-items_col = db["items"]
+if MONGODB_CONNECTION_STRING and MONGODB_DATABASE:
+    client = MongoClient(MONGODB_CONNECTION_STRING, server_api=ServerApi('1'))
+    db = client[MONGODB_DATABASE]
 
-# 1. Count SAP customers (CardCode starts with 'C' and customerType is 'sap')
-sap_customers_count = customers_col.count_documents({
-    "CardCode": {"$regex": r"^C\\d+"},
-    "customerType": "sap"
-})
-print(f"Number of SAP customers: {sap_customers_count}")
+    # Access collections
+    customers_col = db["customers"]
+    invoices_col = db["invoices"]
+    items_col = db["items"]
+
+    # 1. Count SAP customers (CardCode starts with 'C' and customerType is 'sap')
+    try:
+        sap_customers_count = customers_col.count_documents({
+            "CardCode": {"$regex": r"^C\\d+"},
+            "customerType": "sap"
+        })
+        print(f"Number of SAP customers: {sap_customers_count}")
+    except Exception as e:
+        print("Could not count SAP customers (no DB connection):", str(e))
+else:
+    print("MongoDB connection not configured; running in demo mode.")
 
 # 2. Print a sample invoice
 def print_sample_invoice():

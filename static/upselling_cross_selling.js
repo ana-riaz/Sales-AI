@@ -14,23 +14,73 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Demo mode mock data
+function getDemoUpsellingData() {
+    return {
+        success: true,
+        customer_info: {
+            card_code: 'C0001',
+            card_name: 'Demo Customer',
+            customer_type: 'sap',
+            location: 'Demo City, Demo Country'
+        },
+        bundle_suggestions: [
+            {
+                message: 'Complete your bundle — customers also buy these items together',
+                bundle_frequency: 21,
+                total_bundle_items: 4,
+                missing_items: [
+                    { item_code: 'D-1001', name: 'Demo Add-on A', price: 7.99, stock: 12, customer_has: false },
+                    { item_code: 'D-1002', name: 'Demo Add-on B', price: 5.50, stock: 3, customer_has: false }
+                ],
+                complete_deal_items: [
+                    { item_code: 'D-0001', name: 'Demo Base Pack', price: 39.99, stock: 4, customer_has: true },
+                    { item_code: 'D-0002', name: 'Demo Starter Kit', price: 24.50, stock: 8, customer_has: true }
+                ]
+            }
+        ],
+        complementary_items: [
+            { item_code: 'C-2001', name: 'Demo Complementary Item', price: 14.99, stock: 15, frequency: 27 },
+            { item_code: 'C-2002', name: 'Demo Add-on Pack', price: 22.00, stock: 5, frequency: 9 }
+        ],
+        popular_addons: [
+            { item_code: 'P-3001', name: 'Demo Popular Add-on', price: 8.99, stock: 20, frequency: 35 }
+        ],
+        customer_specific_suggestions: [
+            { message: 'Customers like you also buy this when ordering your recent items.', item_code: 'S-4001', name: 'Demo Suggestion', price: 12.50, stock: 6 }
+        ],
+        analysis_summary: {
+            total_bundle_suggestions: 1,
+            total_complementary_items: 2,
+            total_popular_addons: 1,
+            total_customer_suggestions: 1
+        }
+    };
+}
+
 // Generate customer-specific recommendations
 async function generateCustomerRecommendations() {
     const customerId = document.getElementById('customerId').value.trim();
-    
-    if (!customerId) {
+    const demoMode = document.getElementById('demoModeUpselling')?.checked;
+
+    if (!customerId && !demoMode) {
         showAlert('Please enter a customer ID', 'warning');
         return;
     }
-    
+
     showLoading(true);
     hideResults();
-    
+
     try {
-        const response = await fetch(`/api/upselling/recommendations/${customerId}`);
-        const data = await response.json();
-        
-        if (response.ok) {
+        let data;
+        if (demoMode) {
+            data = getDemoUpsellingData();
+        } else {
+            const response = await fetch(`/api/upselling/recommendations/${customerId}`);
+            data = await response.json();
+        }
+
+        if (data.success) {
             currentResults = data;
             displayResults(data);
         } else {

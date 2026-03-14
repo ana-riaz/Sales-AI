@@ -335,6 +335,10 @@
                     <button onclick="getPredictions()">Get Predictions</button>
                     <button onclick="getAllSAPPredictions()">Get All SAP Predictions</button>
                 </div>
+                <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="demoModePredictive" checked />
+                    <label for="demoModePredictive" style="font-size: 0.9em; color: #555;">Demo mode (use sample data)</label>
+                </div>
             </div>
             
                          <div id="results" class="results" style="display: none;">
@@ -362,23 +366,66 @@
     </div>
 
     <script>
+        // Demo mode sample data
+        function getDemoPredictiveData() {
+            return {
+                total_items_analyzed: 12,
+                total_suggestions: 5,
+                suggestions: [
+                    {
+                        type: 'usual_reorder',
+                        priority: 'high',
+                        message: 'Add your usual rice packs to your cart',
+                        reason: 'Customer orders rice weekly and is currently overdue.',
+                        item_code: 'RICE-01',
+                        item_name: 'Premium Basmati Rice',
+                        days_since_last_order: 14,
+                        avg_interval: 7
+                    },
+                    {
+                        type: 'low_stock',
+                        priority: 'medium',
+                        message: 'Stock running low on olive oil',
+                        reason: 'Current stock is below the customer average purchase quantity.',
+                        item_code: 'OIL-04',
+                        item_name: 'Extra Virgin Olive Oil',
+                        current_stock: 5,
+                        stock_threshold: 12
+                    }
+                ],
+                customer_info: {
+                    card_name: 'Demo Customer',
+                    card_code: 'C12345',
+                    customer_type: 'sap',
+                    country: 'Demo Country'
+                }
+            };
+        }
+
         async function getPredictions() {
             const customerId = document.getElementById('customerId').value.trim();
-            if (!customerId) {
+            const demoMode = document.getElementById('demoModePredictive')?.checked;
+
+            if (!customerId && !demoMode) {
                 alert('Please enter a customer ID');
                 return;
             }
-            
+
             showLoading();
-            
+
             try {
-                const response = await fetch(`/api/predictive/${customerId}`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    displayResults(data.predictions);
+                let data;
+                if (demoMode) {
+                    data = getDemoPredictiveData();
                 } else {
+                    const response = await fetch(`/api/predictive/${customerId}`);
+                    data = await response.json();
+                }
+
+                if (data.success === false) {
                     showError(data.message);
+                } else {
+                    displayResults(data.predictions || data);
                 }
             } catch (error) {
                 showError('Failed to fetch predictions: ' + error.message);
@@ -386,9 +433,21 @@
         }
         
         async function getAllSAPPredictions() {
+            const demoMode = document.getElementById('demoModePredictive')?.checked;
             showLoading();
-            
+
             try {
+                if (demoMode) {
+                    displayAllSAPResults({
+                        total_customers: 2,
+                        predictions: [
+                            { customer_id: 'C12345', summary: 'Overdue for reorder on 3 items' },
+                            { customer_id: 'C67890', summary: 'Stock running low on 2 items' }
+                        ]
+                    });
+                    return;
+                }
+
                 const response = await fetch('/api/predictive/all-sap');
                 const data = await response.json();
                 

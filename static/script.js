@@ -2,25 +2,86 @@
 let currentCustomerId = '';
 let currentRecommendations = [];
 
+// Demo sample response (used when demo mode is enabled)
+function getDemoRecommendations(customerId) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve({
+                success: true,
+                customerInfo: {
+                    name: 'Demo Customer',
+                    cardCode: customerId || 'C0000',
+                    location: 'Demo City, Demo Country',
+                    phone: '+123 456 7890',
+                    type: 'sap'
+                },
+                recommendations: [
+                    {
+                        itemCode: 'ITEM-001',
+                        itemDescription: 'Demo Product Alpha',
+                        totalQuantity: 42,
+                        inStock: 12,
+                        available: true,
+                        reason: 'Frequently ordered together with past purchases.',
+                        invoices: [
+                            { DocNum: 1001, DocDate: '2026-03-10', Quantity: 10, Price: 12.5 },
+                            { DocNum: 1002, DocDate: '2026-03-03', Quantity: 8, Price: 12.5 }
+                        ],
+                        similarItemsByName: [
+                            { ItemCode: 'ITEM-002', ItemName: 'Demo Product Beta', QuantityOnStock: 8, Tag: 'Suggested' },
+                            { ItemCode: 'ITEM-003', ItemName: 'Demo Product Gamma', QuantityOnStock: 4, Tag: 'Suggested' }
+                        ],
+                        similarItemsByCode: [
+                            { ItemCode: 'ITEM-004', ItemName: 'Demo Product Delta', QuantityOnStock: 18, Tag: 'Similar Category' }
+                        ],
+                        tag: 'Based on purchase history'
+                    },
+                    {
+                        itemCode: 'ITEM-010',
+                        itemDescription: 'Demo Product Omega',
+                        totalQuantity: 18,
+                        inStock: 0,
+                        available: false,
+                        reason: 'Recently ordered but currently out of stock.',
+                        invoices: [
+                            { DocNum: 1020, DocDate: '2026-02-26', Quantity: 5, Price: 18.0 }
+                        ],
+                        similarItemsByName: [],
+                        similarItemsByCode: [],
+                        tag: 'Out of stock suggestion'
+                    }
+                ]
+            });
+        }, 600);
+    });
+}
+
 // Main function to get recommendations
 async function getRecommendations() {
     const customerId = document.getElementById('customerId').value.trim();
-    
-    if (!customerId) {
+    const demoMode = document.getElementById('demoMode')?.checked;
+
+    if (!customerId && !demoMode) {
         showError('Please enter a Customer ID');
         return;
     }
-    
-    currentCustomerId = customerId;
+
+    currentCustomerId = customerId || 'DEMO';
     showLoading();
     hideError();
     hideCustomerInfo();
     hideRecommendations();
-    
+
     try {
-        // Call the real API endpoint
-        const response = await fetch(`/api/recommendations/${encodeURIComponent(customerId)}`);
-        const data = await response.json();
+        let data;
+        if (demoMode) {
+            data = await getDemoRecommendations(currentCustomerId);
+        } else {
+            // Call the real API endpoint
+            const response = await fetch(`/api/recommendations/${encodeURIComponent(customerId)}`);
+            data = await response.json();
+        }
+
         if (data.success) {
             displayCustomerInfo(data.customerInfo);
             displayRecommendations(data.recommendations);

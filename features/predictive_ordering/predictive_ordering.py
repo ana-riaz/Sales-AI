@@ -13,14 +13,21 @@ load_dotenv()
 MONGODB_CONNECTION_STRING = os.getenv('MONGODB_CONNECTION_STRING')
 MONGODB_DATABASE = os.getenv('MONGODB_DATABASE')
 
-# Connect to MongoDB
-client = MongoClient(MONGODB_CONNECTION_STRING, server_api=ServerApi('1'))
-db = client[MONGODB_DATABASE]
+# Connect to MongoDB (only if configured)
+client = None
+db = None
+invoices_col = None
+items_col = None
+customers_col = None
 
-# Collections
-invoices_col = db['invoices']
-items_col = db['items']
-customers_col = db['customers']
+if MONGODB_CONNECTION_STRING and MONGODB_DATABASE:
+    client = MongoClient(MONGODB_CONNECTION_STRING, server_api=ServerApi('1'))
+    db = client[MONGODB_DATABASE]
+    invoices_col = db['invoices']
+    items_col = db['items']
+    customers_col = db['customers']
+else:
+    print('MongoDB connection not configured; running in demo mode.')
 
 class PredictiveOrderingSystem:
     def __init__(self):
