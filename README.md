@@ -78,26 +78,3 @@ Increases average order value through intelligent product bundling
 | | `json` | Data serialization and storage |
 
 ---
-## Data Flow
-
-```
-graph LR
-    A[SAP System] --> B[(MongoDB Atlas)]
-    B --> C[Flask API]
-    C --> D[Algorithm Processing]
-    D --> E[JSON Response]
-    E --> F[Web Interface]
-
-    subgraph Data Layers
-    A -.-> A1(Customers & Items)
-    B -.-> B1(Invoices & Deals)
-    C -.-> C1(Features & Endpoints)
-    D -.-> D1(ML & Analysis)
-    E -.-> E1(Recommendations)
-    F -.-> F1(User Dashboard)
-    end
-
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style F fill:#dfd,stroke:#333,stroke-width:2px
-```
