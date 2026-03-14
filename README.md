@@ -1,5 +1,4 @@
-# AI Sales Module - Halal Food Deliveries
-
+# E-commerce Recommendation Engine 
 A comprehensive AI-powered sales module built with Python Flask, MongoDB, and JavaScript. The system provides both personalized product recommendations (Feature2) and predictive ordering suggestions (Feature3) for SAP customers in the halal food delivery industry.
 
 ## System Overview
@@ -31,13 +30,6 @@ Main AI features designed to enhance customer experience and drive sales:
 - Uses ItemsGroupCode from the database
 - Groups items in the same product category
 
-### **API Endpoints**
-
-#### **GET `/api/recommendations/<customer_id>`**
-Returns personalized recommendations for a customer.
-
-
----
 
 ### **Feature: Predictive Ordering System**
 
@@ -112,15 +104,6 @@ if current_stock < stock_threshold and days_since_last_order <= 90:
 - **Item Validity**: Only include items with `Valid: 'tYES'` status
 
 
-### **API Endpoints**
-
-#### **GET `/api/predictive/<customer_id>`**
-Returns predictive ordering suggestions for a specific customer.
-
-#### **GET `/api/predictive/all-sap`**
-Returns predictive suggestions for all SAP customers (limited to first 10 for performance).
-
-
 **CSV Columns:**
 ```
 Customer ID, Customer Name, Customer Type, Country, Item Code, Item Name,
@@ -136,75 +119,3 @@ Total Orders, Last Order Date
 - **Format**: Comprehensive JSON with all recommendation data
 
 ---
-
-## 🚀 Setup Instructions
-
-### **1. Clone the Repository**
-   ```bash
-git clone https://github.com/aena800/AI-Sales-Module.git
-cd AI-Sales-Module
-   ```
-
-### **2. Install Dependencies**
-   ```bash
-   pip install flask flask-cors pymongo
-   ```
-
-### **3. Configure MongoDB Connection**
-Update the connection string in `Feature3/predictive_ordering.py`:
-```python
-MONGODB_CONNECTION_STRING = "your_mongodb_connection_string"
-MONGODB_DATABASE = "your_database_name"
-```
-
-### **4. Set up Database Indexes**
-   ```bash
-   python setup_indexes.py
-   ```
-
-### **5. Run the Application**
-   ```bash
-   python app.py
-   ```
-
-### **6. Access the Web Interface**
-- **Feature2 (Recommendations)**: `http://localhost:5000`
-- **Feature3 (Predictive)**: `http://localhost:5000/predictive`
-
----
-
-## 📊 Usage Examples
-
-### **Feature3: Predictive Ordering System**
-
-#### **Web Interface**
-1. Navigate to `http://localhost:5000/predictive`
-2. Enter a SAP customer ID (e.g., "C12345")
-3. View smart cart suggestions organized by category
-4. Analyze order patterns in the table format
-5. Export pattern data to CSV
-
-#### **API Usage**
-```bash
-# Get predictions for specific customer
-curl http://localhost:5000/api/predictive/C12345
-
-# Get predictions for all SAP customers
-curl http://localhost:5000/api/predictive/all-sap
-```
-
-### **Feature2: Recommendation System**
-
-#### **Web Interface**
-1. Navigate to `http://localhost:5000`
-2. Enter a customer ID
-3. View personalized recommendations with similar items
-
-#### **API Usage**
-```bash
-curl http://localhost:5000/api/recommendations/C12345
-```
-
----
-
-
