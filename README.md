@@ -16,7 +16,7 @@ AI Sales Agent is a comprehensive sales intelligence platform that leverages mac
 ### 1. **Personalized Product Recommendations**
 Suggests relevant products based on customer's purchase history
    - **Algorithm**: 
-
+    ```
    ├── Extract all invoices for customer (last 365 days)
    ├── Filter out zero-quantity items (returns/exchanges)
    └── Build comprehensive purchase profile
@@ -25,13 +25,14 @@ Suggests relevant products based on customer's purchase history
    └── Category-based similarity (ItemsGroupCode grouping)
    ├── Check real-time stock availability
    └── Prioritize based on stock levels
-
+   ```
    - **Data Sources**: Customer invoices, item catalog, inventory levels
    - **Output**: Ranked list of recommended products with availability status
 
 ### 2. **Predictive Ordering System**
 PPredicts when customers should reorder items based on historical patterns
    - **Algorithm**: 
+   ```
    Pattern Recognition
    ├── Group orders by ItemCode
    ├── Calculate intervals between consecutive orders
@@ -44,13 +45,13 @@ PPredicts when customers should reorder items based on historical patterns
    ├── Overdue Analysis: avg_interval + 3 to +10 days
    ├── Stock Threshold: 2x average order quantity
    └── Priority Classification: High/Medium based on urgency
-
+   ```
    - **Output**: Smart cart suggestions with priority levels
 
 ### 3. **AI-Driven Upselling & Cross-Selling**
 Increases average order value through intelligent product bundling
    - **Algorithm**: 
-
+   ```
    ├── Extract multi-item deals from database
    ├── Calculate item co-occurrence frequencies
    └── Build association matrices
@@ -59,7 +60,7 @@ Increases average order value through intelligent product bundling
    └── Popular Add-ons: High-frequency items across customers
    ├── Minimum frequency thresholds (2+ occurrences)
    ├── Stock availability validation
-
+   ```
    - **Strategies**: Bundle completion, complementary items, popular add-ons
    - **Output**: Revenue-optimized product suggestions
 
