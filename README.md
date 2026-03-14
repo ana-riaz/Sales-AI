@@ -16,87 +16,88 @@ AI Sales Agent is a comprehensive sales intelligence platform that leverages mac
 ### 1. **Personalized Product Recommendations**
 Suggests relevant products based on customer's purchase history
    - **Algorithm**: 
-    ```
-   ├── Extract all invoices for customer (last 365 days)
-   ├── Filter out zero-quantity items (returns/exchanges)
-   └── Build comprehensive purchase profile
-   ├── Name-based similarity (regex pattern matching)
-   ├── Code-based similarity (item code patterns)
-   └── Category-based similarity (ItemsGroupCode grouping)
-   ├── Check real-time stock availability
-   └── Prioritize based on stock levels
-   ```
+        - Extract all invoices for customer (last 365 days)
+        - Filter out zero-quantity items (returns/exchanges)
+        - Build comprehensive purchase profile
+        - Name-based similarity (regex pattern matching)
+        - Code-based similarity (item code patterns)
+        - Category-based similarity (ItemsGroupCode grouping)
+        - Check real-time stock availability
+        - Prioritize based on stock levels
+   
    - **Data Sources**: Customer invoices, item catalog, inventory levels
    - **Output**: Ranked list of recommended products with availability status
 
 ### 2. **Predictive Ordering System**
 PPredicts when customers should reorder items based on historical patterns
    - **Algorithm**: 
-   ```
-   Pattern Recognition
-   ├── Group orders by ItemCode
-   ├── Calculate intervals between consecutive orders
-   └── Compute statistical measures (mean, median, std dev)
-   ├── Filter patterns within 7-90 day range
-   ├── Require minimum 2 orders for analysis
-   └── Validate consistency thresholds
+        - Group orders by ItemCode
+        - Calculate intervals between consecutive orders
+        - Compute statistical measures (mean, median, std dev)
+        - Filter patterns within 7-90 day range
+        - Require minimum 2 orders for analysis
+        - Validate consistency thresholds
+        - Overdue Analysis: avg_interval + 3 to +10 days
+        - Stock Threshold: 2x average order quantity
+        - Priority Classification: High/Medium based on urgency
 
-   Suggestion Generation
-   ├── Overdue Analysis: avg_interval + 3 to +10 days
-   ├── Stock Threshold: 2x average order quantity
-   └── Priority Classification: High/Medium based on urgency
-   ```
    - **Output**: Smart cart suggestions with priority levels
 
 ### 3. **AI-Driven Upselling & Cross-Selling**
 Increases average order value through intelligent product bundling
    - **Algorithm**: 
-   ```
-   ├── Extract multi-item deals from database
-   ├── Calculate item co-occurrence frequencies
-   └── Build association matrices
-   ├── Bundle Completion: Missing items from popular bundles
-   ├── Complementary Items: Frequently co-purchased products
-   └── Popular Add-ons: High-frequency items across customers
-   ├── Minimum frequency thresholds (2+ occurrences)
-   ├── Stock availability validation
-   ```
+        - Extract multi-item deals from database
+        - Calculate item co-occurrence frequencies
+        - Build association matrices
+        - Bundle Completion: Missing items from popular bundles
+        - Complementary Items: Frequently co-purchased products
+        - Popular Add-ons: High-frequency items across customers
+        - Minimum frequency thresholds (2+ occurrences)
+        - Stock availability validation
+
    - **Strategies**: Bundle completion, complementary items, popular add-ons
    - **Output**: Revenue-optimized product suggestions
 
 ---
-## Techn Stack
+## Tech Stack
 
-### **Backend**
-- **Framework**: Flask
-- **Database**: MongoDB Atlas (Cloud database)
-- **Authentication**: PyMongo with MongoDB Server API
-- **API**: RESTful endpoints with JSON responses
-
-### **Frontend**
-- **JavaScript**: Dynamic user interactions
-- **AJAX**: Asynchronous API calls
-- **Bootstrap**: UI components and styling
-
-### **Data Processing**
-- **Python Libraries**:
-  - `pymongo`: MongoDB driver
-  - `datetime`: Date/time operations
-  - `collections.Counter`: Frequency analysis
-  - `difflib.SequenceMatcher`: Text similarity
-  - `statistics`: Statistical calculations
-  - `json`: Data serialization
+| Category | Technology / Tool | Use Case |
+| :--- | :--- | :--- |
+| **Backend** | Flask | Primary web framework |
+| | MongoDB Atlas | Cloud-hosted database |
+| | PyMongo | Database driver and authentication |
+| | RESTful API | JSON-based communication |
+| **Frontend** | JavaScript (ES6+) | Logic for dynamic user interactions |
+| | AJAX (Fetch/XHR) | Seamless, asynchronous API calls |
+| | Bootstrap | Responsive UI components and styling |
+| **Data & Core** | `pymongo` | MongoDB connectivity |
+| | `datetime` | Precise date/time handling |
+| | `collections` | Frequency analysis using `Counter` |
+| | `difflib` | Text similarity with `SequenceMatcher` |
+| | `statistics` | Mathematical and statistical operations |
+| | `json` | Data serialization and storage |
 
 ---
 ## Data Flow
 
-```
-SAP System → MongoDB Atlas → Python Flask API → Algorithm Processing → JSON Response → Web Interface
-    ↓              ↓              ↓                    ↓                ↓            ↓
-Customers     Invoices        Features/         ML Algorithms     Recommendations  User Dashboard
-& Items       & Deals         Endpoints         & Analysis        & Suggestions    & Analytics
-```
----
-## License
+graph LR
+    A[SAP System] --> B[(MongoDB Atlas)]
+    B --> C[Flask API]
+    C --> D[Algorithm Processing]
+    D --> E[JSON Response]
+    E --> F[Web Interface]
 
-This project is proprietary software developed for food delivery operations.
+    subgraph Data Layers
+    A -.-> A1(Customers & Items)
+    B -.-> B1(Invoices & Deals)
+    C -.-> C1(Features & Endpoints)
+    D -.-> D1(ML & Analysis)
+    E -.-> E1(Recommendations)
+    F -.-> F1(User Dashboard)
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#dfd,stroke:#333,stroke-width:2px
+
+
