@@ -33,7 +33,7 @@ Suggests relevant products based on customer's purchase history
    - **Data Sources**: Customer invoices, item catalog, inventory levels
    - **Output**: Ranked list of recommended products with availability status
 
-### Smart Recommendations   
+  
 ![Smart Recommendations](assets/ss_Suggestions_0.png)
 
 ![Smart Recommendations](assets/ss_Suggestions_1.png)
@@ -55,7 +55,7 @@ PPredicts when customers should reorder items based on historical patterns
 
    - **Output**: Smart cart suggestions with priority levels
 
-### Cart Suggestions
+
 ![Cart Suggestions](assets/ss_reordering.png)
 
 ---
@@ -75,7 +75,7 @@ Increases average order value through intelligent product bundling
    - **Strategies**: Bundle completion, complementary items, popular add-ons
    - **Output**: Revenue-optimized product suggestions
 
-### Bundle Offers 
+
 ![Bundle Offers](assets/ss_bundles.png)
 
 ---
