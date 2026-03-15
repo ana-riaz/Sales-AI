@@ -1,7 +1,12 @@
 ## Project Overview
 
-AI Sales Agent is a comprehensive sales intelligence platform that leverages machine learning and data analysis to provide actionable insights for food delivery operations. The system analyzes customer purchase patterns, inventory data, and product relationships to deliver personalized recommendations that increase customer satisfaction and revenue.
+
+> AI Sales Agent is a comprehensive sales intelligence platform that leverages machine learning and data analysis to provide actionable insights for food delivery operations. The system analyzes customer purchase patterns, inventory data, and product relationships to deliver personalized recommendations that increase customer satisfaction and revenue.
+
+---
+
 ![DashBoard](assets/dashboard.png)
+
 ---
 ## Target Users
 
@@ -27,10 +32,13 @@ Suggests relevant products based on customer's purchase history
    
    - **Data Sources**: Customer invoices, item catalog, inventory levels
    - **Output**: Ranked list of recommended products with availability status
+
+### Smart Recommendations   
 ![Smart Recommendations](assets/ss_Suggestions_0.png)
 
 ![Smart Recommendations](assets/ss_Suggestions_1.png)
 
+---
 
 ### 2. **Predictive Ordering System**
 PPredicts when customers should reorder items based on historical patterns
@@ -46,7 +54,11 @@ PPredicts when customers should reorder items based on historical patterns
         - Priority Classification: High/Medium based on urgency
 
    - **Output**: Smart cart suggestions with priority levels
+
+### Cart Suggestions
 ![Cart Suggestions](assets/ss_reordering.png)
+
+---
 
 ### 3. **AI-Driven Upselling & Cross-Selling**
 Increases average order value through intelligent product bundling
@@ -62,9 +74,12 @@ Increases average order value through intelligent product bundling
 
    - **Strategies**: Bundle completion, complementary items, popular add-ons
    - **Output**: Revenue-optimized product suggestions
+
+### Bundle Offers 
 ![Bundle Offers](assets/ss_bundles.png)
 
 ---
+
 ## Tech Stack
 
 | Category | Technology / Tool | Use Case |
