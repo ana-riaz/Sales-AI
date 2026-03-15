@@ -9,16 +9,16 @@ function getDemoRecommendations(customerId) {
             resolve({
                 success: true,
                 customerInfo: {
-                    name: 'Demo Customer',
+                    name: 'Sarah Johnson',
                     cardCode: customerId || 'C0000',
-                    location: 'Demo City, Demo Country',
-                    phone: '+123 456 7890',
+                    location: 'New York, NY',
+                    phone: '+1 212 555 0123',
                     type: 'sap'
                 },
                 recommendations: [
                     {
-                        itemCode: 'ITEM-001',
-                        itemDescription: 'Demo Product Alpha',
+                        itemCode: 'FOOD-001',
+                        itemDescription: 'Organic Quinoa 1kg',
                         totalQuantity: 42,
                         inStock: 12,
                         available: true,
@@ -28,23 +28,23 @@ function getDemoRecommendations(customerId) {
                             { DocNum: 1002, DocDate: '2026-03-03', Quantity: 8, Price: 12.5 }
                         ],
                         similarItemsByName: [
-                            { ItemCode: 'ITEM-002', ItemName: 'Demo Product Beta', QuantityOnStock: 8, Tag: 'Suggested' },
-                            { ItemCode: 'ITEM-003', ItemName: 'Demo Product Gamma', QuantityOnStock: 4, Tag: 'Suggested' }
+                            { ItemCode: 'FOOD-002', ItemName: 'Brown Rice 2kg', QuantityOnStock: 8, Tag: 'Suggested' },
+                            { ItemCode: 'FOOD-003', ItemName: 'Lentils 500g', QuantityOnStock: 4, Tag: 'Suggested' }
                         ],
                         similarItemsByCode: [
-                            { ItemCode: 'ITEM-004', ItemName: 'Demo Product Delta', QuantityOnStock: 18, Tag: 'Similar Category' }
+                            { ItemCode: 'FOOD-004', ItemName: 'Chickpeas 400g', QuantityOnStock: 18, Tag: 'Similar Category' }
                         ],
                         tag: 'Based on purchase history'
                     },
                     {
-                        itemCode: 'ITEM-010',
-                        itemDescription: 'Demo Product Omega',
+                        itemCode: 'BEV-010',
+                        itemDescription: 'Almond Milk 1L',
                         totalQuantity: 18,
                         inStock: 0,
                         available: false,
                         reason: 'Recently ordered but currently out of stock.',
                         invoices: [
-                            { DocNum: 1020, DocDate: '2026-02-26', Quantity: 5, Price: 18.0 }
+                            { DocNum: 1020, DocDate: '2026-02-26', Quantity: 5, Price: 3.99 }
                         ],
                         similarItemsByName: [],
                         similarItemsByCode: [],
@@ -66,7 +66,7 @@ async function getRecommendations() {
         return;
     }
 
-    currentCustomerId = customerId || 'DEMO';
+    currentCustomerId = customerId || 'C0001';
     showLoading();
     hideError();
     hideCustomerInfo();
@@ -162,7 +162,7 @@ function createRecommendationElement(rec, index) {
             <h4>Purchase History</h4>
             ${rec.invoices.map(inv => `
                 <div class="purchase-item">
-                    Invoice #${inv.docNum} (${inv.docDate}): ${inv.quantity} units @ €${inv.price.toFixed(2)}
+                    Invoice #${inv.DocNum} (${inv.DocDate}): ${inv.Quantity} units @ €${inv.Price.toFixed(2)}
                 </div>
             `).join('')}
         </div>
@@ -173,12 +173,12 @@ function createRecommendationElement(rec, index) {
                 ${rec.similarItemsByName && rec.similarItemsByName.length > 0 ? rec.similarItemsByName.map(item => `
                     <div class="similar-item">
                         <div>
-                            <div class="similar-item-name">${item.itemName}</div>
-                            <div class="similar-item-code">${item.itemCode}</div>
-                            <div class="similar-item-tag">${item.tag || ''}</div>
+                            <div class="similar-item-name">${item.ItemName}</div>
+                            <div class="similar-item-code">${item.ItemCode}</div>
+                            <div class="similar-item-tag">${item.Tag || ''}</div>
                         </div>
-                        <span class="stock-status ${item.inStock > 0 ? 'in-stock' : 'out-of-stock'}">
-                            ${item.inStock > 0 ? 'In Stock' : 'Out of Stock'}
+                        <span class="stock-status ${item.QuantityOnStock > 0 ? 'in-stock' : 'out-of-stock'}">
+                            ${item.QuantityOnStock > 0 ? 'In Stock' : 'Out of Stock'}
                         </span>
                     </div>
                 `).join('') : '<div class="no-similar">No similar items found by name.</div>'}
@@ -188,12 +188,12 @@ function createRecommendationElement(rec, index) {
                 ${rec.similarItemsByCode && rec.similarItemsByCode.length > 0 ? rec.similarItemsByCode.map(item => `
                     <div class="similar-item">
                         <div>
-                            <div class="similar-item-name">${item.itemName}</div>
-                            <div class="similar-item-code">${item.itemCode}</div>
-                            <div class="similar-item-tag">${item.tag || ''}</div>
+                            <div class="similar-item-name">${item.ItemName}</div>
+                            <div class="similar-item-code">${item.ItemCode}</div>
+                            <div class="similar-item-tag">${item.Tag || ''}</div>
                         </div>
-                        <span class="stock-status ${item.inStock > 0 ? 'in-stock' : 'out-of-stock'}">
-                            ${item.inStock > 0 ? 'In Stock' : 'Out of Stock'}
+                        <span class="stock-status ${item.QuantityOnStock > 0 ? 'in-stock' : 'out-of-stock'}">
+                            ${item.QuantityOnStock > 0 ? 'In Stock' : 'Out of Stock'}
                         </span>
                     </div>
                 `).join('') : '<div class="no-similar">No similar items found by code.</div>'}

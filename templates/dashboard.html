@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Intelligence Dashboard - Smart Sales Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dashboard-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 0rem 0;
+            margin-bottom: 2rem;
+        }
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .metric-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .feature-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            background: #667eea;
+            color: white;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .status-active { background: #28a745; }
+        .status-warning { background: #ffc107; }
+        .status-danger { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">Smart Sales Assistant</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recommendations">Product Suggestions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/predictive">Smart Reordering</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/upselling">Bundle Deals</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    </br></br>
+    <div class="container">
+        <!-- Key Metrics Row -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="metric-card">
+                    <div class="metric-value" id="totalRevenue">€24,580</div>
+                    <div class="metric-label">Revenue Potential</div>
+                    <div class="small text-success mt-2">
+                        <i class="fas fa-arrow-up"></i> +12.5% from last month
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="metric-card">
+                    <div class="metric-value" id="activeCustomers">1,247</div>
+                    <div class="metric-label">Active Customers</div>
+                    <div class="small text-success mt-2">
+                        <i class="fas fa-arrow-up"></i> +8.2% from last month
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="metric-card">
+                    <div class="metric-value" id="conversionRate">34.7%</div>
+                    <div class="metric-label">Suggestion Conversion</div>
+                    <div class="small text-success mt-2">
+                        <i class="fas fa-arrow-up"></i> +5.1% from last month
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="metric-card">
+                    <div class="metric-value" id="avgOrderValue">€67.50</div>
+                    <div class="metric-label">Average Order Value</div>
+                    <div class="small text-success mt-2">
+                        <i class="fas fa-arrow-up"></i> +9.3% from last month
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Access -->
+        <div class="row">
+            <div class="col-12">
+                <div class="chart-container">
+                    <h5 class="mb-3">Quick Access Tools</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="feature-card" onclick="window.location.href='/recommendations'">
+                                <div class="feature-icon">
+                                    <i class="fas fa-bullseye"></i>
+                                </div>
+                                <h6>Product Suggestions</h6>
+                                <p class="text-muted small">Get personalized product recommendations for any customer</p>
+                                <button class="btn btn-outline-primary btn-sm">Access Tool</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="feature-card" onclick="window.location.href='/predictive'">
+                                <div class="feature-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <h6>Smart Reordering</h6>
+                                <p class="text-muted small">Predict when customers need to reorder their regular items</p>
+                                <button class="btn btn-outline-primary btn-sm">Access Tool</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="feature-card" onclick="window.location.href='/upselling'">
+                                <div class="feature-icon">
+                                    <i class="fas fa-gift"></i>
+                                </div>
+                                <h6>Bundle Deals</h6>
+                                <p class="text-muted small">Create profitable product bundles and complementary suggestions</p>
+                                <button class="btn btn-outline-primary btn-sm">Access Tool</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            updateLastUpdate();
+            startLiveUpdates();
+        });
+
+        function initializeCharts() {
+            // Revenue Trend Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Revenue (€)',
+                        data: [18500, 19200, 21800, 22400, 23100, 24580],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '€' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Category Distribution Chart
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(categoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Food Items', 'Beverages', 'Household', 'Personal Care', 'Other'],
+                    datasets: [{
+                        data: [35, 25, 20, 12, 8],
+                        backgroundColor: [
+                            '#667eea',
+                            '#764ba2',
+                            '#f093fb',
+                            '#f5576c',
+                            '#4ecdc4'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateLastUpdate() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = now.toLocaleTimeString();
+        }
+
+        function startLiveUpdates() {
+            // Update metrics every 30 seconds with simulated data
+            setInterval(() => {
+                updateMetrics();
+                updateLastUpdate();
+            }, 30000);
+        }
+
+        function updateMetrics() {
+            // Simulate live data updates
+            const metrics = {
+                totalRevenue: Math.floor(24000 + Math.random() * 2000),
+                activeCustomers: Math.floor(1200 + Math.random() * 100),
+                conversionRate: (30 + Math.random() * 10).toFixed(1),
+                avgOrderValue: (60 + Math.random() * 15).toFixed(2)
+            };
+
+            document.getElementById('totalRevenue').textContent = '€' + metrics.totalRevenue.toLocaleString();
+            document.getElementById('activeCustomers').textContent = metrics.activeCustomers.toLocaleString();
+            document.getElementById('conversionRate').textContent = metrics.conversionRate + '%';
+            document.getElementById('avgOrderValue').textContent = '€' + metrics.avgOrderValue;
+        }
+
+        // Add click handlers for feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const button = this.querySelector('button');
+                if (button) {
+                    button.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -20,34 +20,34 @@ function getDemoUpsellingData() {
         success: true,
         customer_info: {
             card_code: 'C0001',
-            card_name: 'Demo Customer',
+            card_name: 'Michael Chen',
             customer_type: 'sap',
-            location: 'Demo City, Demo Country'
+            location: 'San Francisco, CA'
         },
         bundle_suggestions: [
             {
-                message: 'Complete your bundle — customers also buy these items together',
+                message: 'Complete your healthy breakfast bundle — customers also buy these items together',
                 bundle_frequency: 21,
                 total_bundle_items: 4,
                 missing_items: [
-                    { item_code: 'D-1001', name: 'Demo Add-on A', price: 7.99, stock: 12, customer_has: false },
-                    { item_code: 'D-1002', name: 'Demo Add-on B', price: 5.50, stock: 3, customer_has: false }
+                    { item_code: 'BEV-1001', name: 'Greek Yogurt 500g', price: 4.99, stock: 12, customer_has: false },
+                    { item_code: 'BEV-1002', name: 'Orange Juice 1L', price: 3.49, stock: 3, customer_has: false }
                 ],
                 complete_deal_items: [
-                    { item_code: 'D-0001', name: 'Demo Base Pack', price: 39.99, stock: 4, customer_has: true },
-                    { item_code: 'D-0002', name: 'Demo Starter Kit', price: 24.50, stock: 8, customer_has: true }
+                    { item_code: 'FOOD-0001', name: 'Organic Oats 500g', price: 5.99, stock: 4, customer_has: true },
+                    { item_code: 'FOOD-0002', name: 'Mixed Berries 250g', price: 6.99, stock: 8, customer_has: true }
                 ]
             }
         ],
         complementary_items: [
-            { item_code: 'C-2001', name: 'Demo Complementary Item', price: 14.99, stock: 15, frequency: 27 },
-            { item_code: 'C-2002', name: 'Demo Add-on Pack', price: 22.00, stock: 5, frequency: 9 }
+            { item_code: 'SNACK-2001', name: 'Trail Mix 200g', price: 7.99, stock: 15, frequency: 27 },
+            { item_code: 'SNACK-2002', name: 'Dark Chocolate 100g', price: 4.50, stock: 5, frequency: 9 }
         ],
         popular_addons: [
-            { item_code: 'P-3001', name: 'Demo Popular Add-on', price: 8.99, stock: 20, frequency: 35 }
+            { item_code: 'BEV-3001', name: 'Green Tea Bags 20ct', price: 3.99, stock: 20, frequency: 35 }
         ],
         customer_specific_suggestions: [
-            { message: 'Customers like you also buy this when ordering your recent items.', item_code: 'S-4001', name: 'Demo Suggestion', price: 12.50, stock: 6 }
+            { message: 'Customers like you also buy this when ordering organic produce.', item_code: 'FOOD-4001', name: 'Avocado Oil 250ml', price: 12.99, stock: 6 }
         ],
         analysis_summary: {
             total_bundle_suggestions: 1,

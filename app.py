@@ -34,7 +34,11 @@ def save_analysis_to_json(analysis_result, customer_id):
 
 @app.route('/')
 def index():
-    return render_template('personalized_recommendations.html')
+    return render_template('dashboard.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/recommendations')
 def recommendations_index():

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Sales Assistant - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .features {
+            padding: 60px 0;
+            background: #f8f9fa;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .feature-icon {
+            font-size: 3em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .feature-card p {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        .cta-section {
+            padding: 60px 0;
+            text-align: center;
+            background: white;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: transform 0.2s;
+            margin: 10px;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        .demo-badge {
+            background: #28a745;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white; padding: 15px 0;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+            <div style="font-size: 1.5em; font-weight: 600;">Smart Sales Assistant</div>
+            <div style="display: flex; gap: 20px;">
+                <a href="/" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px; background: rgba(255,255,255,0.2);" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">Home</a>
+                <a href="/recommendations" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">Product Suggestions</a>
+                <a href="/predictive" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">Smart Reordering</a>
+                <a href="/upselling" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">Bundle Deals</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h1>Smart Sales Assistant</h1>
+            <p>Transform your sales process with AI-powered insights that help you sell more, serve better, and grow faster.</p>
+            <div class="demo-badge">Demo Mode Available - Try it now!</div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Smart Product Suggestions</h3>
+                <p>Discover what your customers are likely to buy next based on their purchase history. Never miss a sales opportunity again.</p>
+                <a href="/recommendations" class="cta-button">Try Product Suggestions</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Reorder Reminders</h3>
+                <p>Get notified when customers typically reorder their regular items. Keep them stocked and satisfied.</p>
+                <a href="/predictive" class="cta-button">Try Reorder Assistant</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Bundle Deal Generator</h3>
+                <p>Create profitable product bundles and complementary item suggestions to increase your average order value.</p>
+                <a href="/upselling" class="cta-button">Try Bundle Generator</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2 style="color: #2c3e50; margin-bottom: 20px;">Ready to Boost Your Sales?</h2>
+        <p style="color: #6c757d; font-size: 1.1em; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Start with our demo mode to see how AI can transform your sales process. No setup required - just enter a customer code.
+        </p>
+        <a href="/recommendations" class="cta-button" style="background: #28a745; font-size: 1.2em; padding: 20px 40px;">
+            <i class="fas fa-play me-2"></i>Start Demo Now
+        </a>
+    </section>
+
+</body>
+</html>
